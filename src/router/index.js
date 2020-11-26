@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Covid from '../views/Covid.vue'
+import Dashboard from '../views/DashBoard.vue'
 
 Vue.use(VueRouter)
 
@@ -20,6 +21,11 @@ const routes = [{
         path: '/covid',
         name: 'Covid',
         component: Covid
+    },
+    {
+        path: '/dashboard',
+        name: 'DashBoard',
+        component: Dashboard
     }
 ]
 

@@ -2,7 +2,7 @@
   <div id="nav-bar" class="mx-auto overflow-hidden">       
     <v-app-bar color="transparent" flat dark fixed> 
       <router-link to="/">
-        <img width="200" height="100" :src="require('@/assets/Logo.png')" />
+        <img class="pt-2" width="200" height="100" :src="require('@/assets/Logo.png')" />
       </router-link>
       <v-spacer></v-spacer>
       <v-menu  transition="slide-y-transition" offset-y full-width max-width="500" center v-if="isMobile">
@@ -25,14 +25,7 @@
       </v-menu>
       <v-btn v-if="!isMobile" text :ripple="false" id="menu" to="/">Inicio</v-btn>
       <v-btn v-if="!isMobile" text :ripple="false" id="menu" to="/covid">Covid19</v-btn>
-      <v-btn
-        icon
-        :ripple="false"
-        v-ripple="{ class: 'transparent--text' }"
-        id="menu"
-        v-if="!isMobile"
-        to="/login"
-      >
+      <v-btn icon :ripple="false" v-ripple="{ class: 'transparent--text' }" id="menu" v-if="!isMobile" to="/login">
         <v-icon>fas fa-user</v-icon>
       </v-btn>
     </v-app-bar>
