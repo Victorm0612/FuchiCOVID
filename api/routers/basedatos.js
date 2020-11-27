@@ -70,11 +70,11 @@ router.post('/insertarprofesional', (req, res) => {
 router.get('/login', async(req, res) => {
     const { email, password } = req.body;
     const booleans = await pool.query(`SELECT login('${email}','${password}')`);
-    const value = booleans.rows[0].f_login
-    if (value == 2) {
+    const value = booleans.rows[0].login
+    if (value == 1) {
         let user = await pool.query(`SELECT * FROM funcionario WHERE email='${email}'`)
         res.json({ 'type_user': value, 'user': user.rows[0] })
-    } else if (value == 3) {
+    } else if (value == 2) {
         let user = await pool.query(`SELECT * FROM profesional WHERE email='${email}'`)
         res.json({ 'type_user': value, 'user': user.rows[0] })
     } else {
