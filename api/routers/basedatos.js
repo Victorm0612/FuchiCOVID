@@ -2,6 +2,7 @@ const { Pool } = require('pg');
 const Router = require('express-promise-router');
 const keys = require('../config/keys');
 const { query } = require('express');
+const bcrypt = require('bcrypt');
 
 
 const pool = new Pool({
@@ -38,7 +39,7 @@ router.post('/insertarentidadsalud', async(req, res) => {
     }
 })
 
-router.post('/insertarprofesional', async(req, res) => {
+router.post('/insertarprofesional', (req, res) => {
     const {
         num_id,
         tipo_id,
@@ -56,14 +57,31 @@ router.post('/insertarprofesional', async(req, res) => {
     } = req.body;
     console.log(req.body)
     try {
-        await pool.query(
+        pool.query(
             `INSERT INTO profesional(num_id,tipo_id,direccion,barrio,registrado_por,id_universidad,id_entidadSalud,periodo_registro,mes_registro,dia_registro,hora_registro,email,contrasenia) VALUES('${num_id}','${tipo_id}','${direccion}','${barrio}','${registrado_por}','${id_universidad}','${id_entidadSalud}','${periodo_registro}','${mes_registro}','${dia_registro}','${hora_registro}','${email}','${contrasenia}')`
         );
-        res.json({ 'RES': 'INSERTADO' });
+        res.json({ 'RES': 'ACTUALIZADO' });
     } catch (error) {
         res.json({ 'RES': error });
     }
+
 });
+
+router.get('/login', async(req, res) => {
+    const { email, password } = req.body;
+    const booleans = await pool.query(`SELECT login('${email}','${password}')`);
+    const value = booleans.rows[0].f_login
+    if (value == 2) {
+        let user = await pool.query(`SELECT * FROM funcionario WHERE email='${email}'`)
+        res.json({ 'type_user': value, 'user': user.rows[0] })
+    } else if (value == 3) {
+        let user = await pool.query(`SELECT * FROM profesional WHERE email='${email}'`)
+        res.json({ 'type_user': value, 'user': user.rows[0] })
+    } else {
+        res.json({ 'RES': 'Email o contraseña incorrecta.' })
+    };
+
+})
 
 router.get('/consultaprofesional', async(req, res) => {
 
