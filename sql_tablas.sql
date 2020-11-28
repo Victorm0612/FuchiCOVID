@@ -127,7 +127,7 @@ CREATE OR REPLACE FUNCTION login(varchar,varchar) RETURNS table(id_ integer, typ
 			IF loginPass = passFunc THEN
 				RETURN QUERY SELECT id_funcionario, 1 FROM funcionario WHERE email=loginEmail;
 			ELSIF loginPass = passProf THEN
-				RETURN QUERY SELECT num_id, 1 FROM profesional WHERE email=loginEmail;
+				RETURN QUERY SELECT num_id, 2 FROM profesional WHERE email=loginEmail;
 			ELSE 
 				id_:= NULL;
 				type_:= NULL;
