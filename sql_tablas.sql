@@ -117,11 +117,6 @@ VALUES('Rodrigo','Martinez','rodrigo@secretaria.com','Hola!123')
 
 -- TRIGGERS Y FUNCIONES ALMACENADAS
 
-select id_funcionario, 1 from funcionario
-select * from profesional
-select f_login('pro2@gmail.com','$2b$10$kmYZdB/WXyhMFLkm1vmYp.ImEREhxUrc6djaX.rdwEMcHSmuV/uDe')
-select * from login('rodrigo@secretaria.com','Hola!123')
-
 CREATE OR REPLACE FUNCTION login(varchar,varchar) RETURNS table(id_ integer, type_ integer) AS $$
 	DECLARE
 			loginEmail ALIAS FOR $1;
