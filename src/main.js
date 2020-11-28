@@ -12,7 +12,7 @@ Vue.component('LazyYoutubeVideo', LazyYoutubeVideo)
 
 Vue.use(VueAxios, axios)
 
-axios.defaults.baseURL = 'http://localhost:3000/basedatos/';
+axios.defaults.baseURL = 'http://localhost:3000/';
 Vue.config.productionTip = false
 
 new Vue({

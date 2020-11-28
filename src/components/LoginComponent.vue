@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import axios from 'axios'
     export default {
         name: 'LoginComponent',
   data() {
@@ -112,8 +113,16 @@
   },
   methods: {   
     login(){
-
-        this.dialog=true;
+        axios.post('login/',{
+          email: this.email,
+          contrasenia: this.password
+        })
+        .then(res=>{
+          console.log(res)
+        })
+        .catch((e)=>{
+          this.dialog=true;
+        })
     },
     moveToPage: function(route) {
       this.load = !this.load;
