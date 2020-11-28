@@ -75,7 +75,7 @@ const getProById = async(req, res) => {
             // Finaliza validación del token -----
             const id = req.params.id
             try {
-                const response = await pool.query(`SELECT * FROM profesional WHERE id_profesional='${id}'`);
+                const response = await pool.query(`SELECT * FROM profesional WHERE num_id='${id}'`);
                 res.json(response.rows)
             } catch (error) {
                 res.status(403).json({ 'RES': 'ERROR' })
