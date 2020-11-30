@@ -60,7 +60,7 @@ const getPros = async(req, res) => {
     const token = req.signedCookies.JWT_TOKEN
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
-        if (user === null)
+        if (user === null || user.type === 2)
             res.status(403).json({ 'RES': 'ERROR' })
         else {
             // Finaliza validación del token -----
@@ -79,7 +79,7 @@ const getProById = async(req, res) => {
     console.log(token)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
-        if (user === null)
+        if (user === null || user.type === 2)
             res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
         else {
             // Finaliza validación del token -----
@@ -101,9 +101,9 @@ const createPro = async(req, res) => {
     //Validando que el token sea correcto ------
     const token = req.signedCookies.JWT_TOKEN
     if (token) {
-        const user = await validateToken(token, JWT_SECRET);
-        if (user === null)
-            res.status(403).json({ 'RES': 'ERROR' })
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null || user.type === 2)
+            res.status(403).json({ 'RES': 'ERROR DE USUARIO' })
         else {
             // Finaliza validación del token -----
             const { num_id, tipo_id, direccion, barrio, registrado_por, id_universidad, id_entidadSalud, periodo_registro, mes_registro, dia_registro, hora_registro, email, contrasenia } = req.body;
@@ -113,11 +113,11 @@ const createPro = async(req, res) => {
                 );
                 res.json(req.body);
             } catch (error) {
-                res.json({ 'RES': error });
+                res.json({ 'RES': 'ERROR AL REGISTRAR PROFESIONAL' });
             }
         }
     } else {
-        res.status(403).json({ 'RES': 'ERROR' })
+        res.status(403).json({ 'RES': 'ERROR CON TOKEN' })
     }
 
 };
@@ -127,7 +127,7 @@ const updatePro = async(req, res) => {
     const token = req.signedCookies.JWT_TOKEN
     if (token) {
         const user = await validateToken(token, JWT_SECRET);
-        if (user === null)
+        if (user === null || user.type === 2)
             res.status(403).json({ 'RES': 'ERROR' })
         else {
             // Finaliza validación del token -----
@@ -166,7 +166,7 @@ const deletePro = async(req, res) => {
     const token = req.signedCookies.JWT_TOKEN
     if (token) {
         const user = await validateToken(token, JWT_SECRET);
-        if (user === null)
+        if (user === null || user.type === 2)
             res.status(403).json({ 'RES': 'ERROR' })
         else {
             // Finaliza validación del token -----
