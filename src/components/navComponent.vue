@@ -2,7 +2,7 @@
   <div id="nav-bar" class="mx-auto overflow-hidden">       
     <v-app-bar color="transparent" flat dark fixed> 
       <router-link to="/">
-        <img class="pt-2" width="200" height="100" :src="require('@/assets/Logo.png')" />
+        <img class="pt-2" width="200" height="100" :src="require('@/assets/logo.png')" />
       </router-link>
       <v-spacer></v-spacer>
       <v-menu  transition="slide-y-transition" offset-y full-width max-width="500" center v-if="isMobile">
