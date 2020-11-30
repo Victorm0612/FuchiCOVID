@@ -119,6 +119,7 @@ import axios from 'axios'
         })
         .then(res=>{
           console.log(res)
+          
         })
         .catch((e)=>{
           this.dialog=true;

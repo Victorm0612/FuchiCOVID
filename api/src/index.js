@@ -3,10 +3,18 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
 
+
 //middlewares
+require('dotenv').config();
 app.use(express.json());
-app.use(cors());
-app.use(cookieParser());
+
+const corsOptions = {
+    origin: '*',
+    credentials: true,
+    exposedHeaders: ["set-cookie"]
+};
+app.use(cors(corsOptions));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.urlencoded({ extended: false }));
 
 // Routes

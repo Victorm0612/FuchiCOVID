@@ -2,8 +2,7 @@ const { Pool } = require('pg')
 const keys = require('../config/keys');
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = "{8367E87C-B794-4A04-89DD-15FE7FDBFF78}"
-const JWT_REFRESH_SECRET = "{asdfasdfdsfa-B794-4A04-89DD-15FE7FDBFF78}"
+require('dotenv').config()
 
 const pool = new Pool({
     connectionString: keys.posgresqlURI,
@@ -19,10 +18,12 @@ const login = async(req, res) => {
     if (id_user || type_user) {
         // si son diferentes de nulo quiere decir que los datos son correctos.
         const payLoad = { "id": id_user, "type": type_user };
-        const token = jwt.sign(payLoad, JWT_SECRET, { algorithm: 'HS256', expiresIn: '1h' })
-        const refreshtoken = jwt.sign(payLoad, JWT_REFRESH_SECRET, { algorithm: 'HS256' })
+        const token = jwt.sign(payLoad, process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: '1h' })
+        const refreshtoken = jwt.sign(payLoad, process.env.JWT_REFRESH_SECRET, { algorithm: 'HS256' })
 
-        res.setHeader("set-cookie", [`JWT_TOKEN=${token}; httponly; samesite=lax`])
+        const isSecure = req.app.get('env') != 'development';
+        //res.cookie('token', token, { httpOnly: true, secure: isSecure, signed: true, sameSite: true })
+        res.setHeader("set-cookie", [`JWT_TOKEN=${token}; httponly; samesite=Lax secure=${isSecure}`])
         res.status(200).json({ 'TOKEN': token, 'REFRESH_TOKEN': refreshtoken })
     } else {
         // si son nulos entonces los datos son incorrectos.
@@ -66,7 +67,7 @@ const getPros = async(req, res) => {
 
 const getProById = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.headers.authorization
+    const token = req.headers.cookies
     if (token) {
         const user = await validateToken(token.substring(6), JWT_SECRET);
         if (user === null)
@@ -82,6 +83,7 @@ const getProById = async(req, res) => {
             }
         }
     } else {
+        console.log(req)
         res.status(403).json({ 'RES': 'ERROR' })
     }
 };
