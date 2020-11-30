@@ -2,10 +2,11 @@ const path = require('path');
 const { Pool } = require('pg')
 const keys = require(path.join(__dirname, '../config/keys'));
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser')
 const express = require('express')
+const cookieParser = require('cookie-parser')
 app = express()
-app.use(cookieParser())
+app.use(cookieParser(process.env.COOKIE_SECRET))
+
 
 require('dotenv').config()
 
@@ -17,7 +18,7 @@ const pool = new Pool({
 const login = async(req, res) => {
     // Se loguea usando la funcion almacenada login la cual devuelve id y tipo de usuario
     const { email, contrasenia } = req.body;
-    response = await pool.query(`SELECT * FROM login('${email}','${contrasenia}')`)
+    let response = await pool.query(`SELECT * FROM login('${email}','${contrasenia}')`)
     const id_user = response.rows[0].id_;
     const type_user = response.rows[0].type_;
     if (id_user || type_user) {
@@ -27,8 +28,10 @@ const login = async(req, res) => {
         const refreshtoken = jwt.sign(payLoad, process.env.JWT_REFRESH_SECRET, { algorithm: 'HS256' })
 
         const isSecure = req.app.get('env') != 'development';
+
         res.cookie('JWT_TOKEN', token, { httpOnly: true, secure: isSecure, signed: true, sameSite: true, expires: false, maxAge: 60 * 60 * 1000 })
-        res.status(200).json({ refreshToken: refreshtoken, id: id_user, type: type_user })
+        res.status(200).json({ token: token, refreshToken: refreshtoken, id: id_user, type: type_user })
+
     } else {
         // si son nulos entonces los datos son incorrectos.
         res.status(403).json({ 'RES': 'ERROR DE DATOS' })
@@ -40,10 +43,13 @@ const login = async(req, res) => {
 const logout = async(req, res) => {
     //Validando que el token sea correcto ------
     const token = req.body.refreshToken;
+    console.log(req)
     if (token) {
         //Finaliza validación del token -----
-        res.cookie('JWT_TOKEN', null)
+        res.cookie('JWT_TOKEN', null) // Cambio su valor a nulo pues de esta manera si no se borra del navegador, queda obsoleto.
+        res.clearCookie('JWT_TOKEN'); // Elimino la cookie.
         res.send({ "RES": "logged out" })
+
     } else {
         res.status(403).json({ 'RES': 'ERROR' })
     }
@@ -51,9 +57,9 @@ const logout = async(req, res) => {
 
 const getPros = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.headers.authorization
+    const token = req.signedCookies.JWT_TOKEN
     if (token) {
-        const user = await validateToken(token.substring(6), JWT_SECRET);
+        const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)
             res.status(403).json({ 'RES': 'ERROR' })
         else {
@@ -69,11 +75,12 @@ const getPros = async(req, res) => {
 
 const getProById = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.cookies
+    const token = req.signedCookies.JWT_TOKEN
+    console.log(token)
     if (token) {
-        const user = await validateToken(token.substring(6), JWT_SECRET);
+        const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)
-            res.status(403).json({ 'RES': 'ERROR' })
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
         else {
             // Finaliza validación del token -----
             const id = req.params.id
@@ -81,20 +88,20 @@ const getProById = async(req, res) => {
                 const response = await pool.query(`SELECT * FROM profesional WHERE num_id='${id}'`);
                 res.json(response.rows)
             } catch (error) {
-                res.status(403).json({ 'RES': 'ERROR' })
+                res.status(403).json({ 'RES': 'ERROR, NO SE ENCUENTRA EL PROFESIONAL' })
             }
         }
     } else {
         console.log(req)
-        res.status(403).json({ 'RES': 'ERROR' })
+        res.status(403).json({ 'RES': 'ERROR TOKEN NULO' })
     }
 };
 
 const createPro = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.headers.authorization
+    const token = req.signedCookies.JWT_TOKEN
     if (token) {
-        const user = await validateToken(token.substring(6), JWT_SECRET);
+        const user = await validateToken(token, JWT_SECRET);
         if (user === null)
             res.status(403).json({ 'RES': 'ERROR' })
         else {
@@ -117,9 +124,9 @@ const createPro = async(req, res) => {
 
 const updatePro = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.headers.authorization
+    const token = req.signedCookies.JWT_TOKEN
     if (token) {
-        const user = await validateToken(token.substring(6), JWT_SECRET);
+        const user = await validateToken(token, JWT_SECRET);
         if (user === null)
             res.status(403).json({ 'RES': 'ERROR' })
         else {
@@ -156,9 +163,9 @@ const updatePro = async(req, res) => {
 
 const deletePro = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.headers.authorization
+    const token = req.signedCookies.JWT_TOKEN
     if (token) {
-        const user = await validateToken(token.substring(6), JWT_SECRET);
+        const user = await validateToken(token, JWT_SECRET);
         if (user === null)
             res.status(403).json({ 'RES': 'ERROR' })
         else {
