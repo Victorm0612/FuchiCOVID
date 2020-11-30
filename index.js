@@ -13,12 +13,21 @@ const corsOptions = {
     credentials: true,
     exposedHeaders: ["set-cookie"]
 };
+
+app.use('/', serveStatic(path.join(__dirname, '/dist')))
+
 app.use(cors(corsOptions));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
-app.use(require('./routes/index'));
+app.use(require('./api/src/routes/index'));
 
-app.listen(3000)
+app.get(/.*/, function(req, res) {
+    res.sendFile(path.join(__dirname, '/dist/index.html'))
+})
+
+const port = process.env.PORT || 8080
+
+app.listen(port)
 console.log('Server on port 3000')

@@ -1,30 +1,31 @@
 {
-  "name": "fuchi-covid",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.1",
-    "axios": "^0.21.0",
-    "core-js": "^3.6.5",
-    "vue": "^2.6.11",
-    "vue-axios": "^3.2.0",
-    "vue-lazy-youtube-video": "^2.3.0",
-    "vue-router": "^3.2.0",
-    "vuetify": "^2.3.19",
-    "vuex": "^3.4.0"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "deepmerge": "^4.2.2",
-    "sass": "^1.29.0",
-    "sass-loader": "^10.1.0",
-    "vue-template-compiler": "^2.6.11"
-  }
+    "name": "fuchi-covid",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "start": "node index.js",
+        "build": "vue-cli-service build"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.1",
+        "axios": "^0.21.0",
+        "core-js": "^3.6.5",
+        "vue": "^2.6.11",
+        "vue-axios": "^3.2.0",
+        "vue-lazy-youtube-video": "^2.3.0",
+        "vue-router": "^3.2.0",
+        "vuetify": "^2.3.19",
+        "vuex": "^3.4.0"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "~4.5.0",
+        "@vue/cli-plugin-router": "~4.5.0",
+        "@vue/cli-plugin-vuex": "~4.5.0",
+        "@vue/cli-service": "~4.5.0",
+        "deepmerge": "^4.2.2",
+        "sass": "^1.29.0",
+        "sass-loader": "^10.1.0",
+        "vue-template-compiler": "^2.6.11"
+    }
 }
