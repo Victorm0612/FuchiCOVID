@@ -2,6 +2,10 @@ const path = require('path');
 const { Pool } = require('pg')
 const keys = require(path.join(__dirname, '../config/keys'));
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser')
+const express = require('express')
+app = express()
+app.use(cookieParser())
 
 require('dotenv').config()
 
@@ -23,12 +27,11 @@ const login = async(req, res) => {
         const refreshtoken = jwt.sign(payLoad, process.env.JWT_REFRESH_SECRET, { algorithm: 'HS256' })
 
         const isSecure = req.app.get('env') != 'development';
-        //res.cookie('token', token, { httpOnly: true, secure: isSecure, signed: true, sameSite: true })
-        res.setHeader("set-cookie", [`JWT_TOKEN=${token}; httponly; SameSite=Lax secure=${isSecure}`])
-        res.status(200).json({ 'TOKEN': token, 'REFRESH_TOKEN': refreshtoken })
+        res.cookie('JWT_TOKEN', token, { httpOnly: true, secure: isSecure, signed: true, sameSite: true, expires: false, maxAge: 60 * 60 * 1000 })
+        res.status(200).json({ refreshToken: refreshtoken, id: id_user, type: type_user })
     } else {
         // si son nulos entonces los datos son incorrectos.
-        res.status(403).json({ 'RES': 'ERROR' })
+        res.status(403).json({ 'RES': 'ERROR DE DATOS' })
         return;
     }
 
@@ -39,9 +42,7 @@ const logout = async(req, res) => {
     const token = req.body.refreshToken;
     if (token) {
         //Finaliza validación del token -----
-        if (req.cookies.JWT_TOKEN) {
-            res.setHeader("set-cookie", [`JWT_TOKEN=${null}; httponly; samesite=lax`])
-        }
+        res.cookie('JWT_TOKEN', null)
         res.send({ "RES": "logged out" })
     } else {
         res.status(403).json({ 'RES': 'ERROR' })
@@ -68,7 +69,7 @@ const getPros = async(req, res) => {
 
 const getProById = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.headers.cookies
+    const token = req.cookies
     if (token) {
         const user = await validateToken(token.substring(6), JWT_SECRET);
         if (user === null)
