@@ -1,5 +1,6 @@
+const path = require('path');
 const { Pool } = require('pg')
-const keys = require('../config/keys');
+const keys = require(path.join(__dirname, '../config/keys'));
 const jwt = require('jsonwebtoken');
 
 require('dotenv').config()
@@ -23,7 +24,7 @@ const login = async(req, res) => {
 
         const isSecure = req.app.get('env') != 'development';
         //res.cookie('token', token, { httpOnly: true, secure: isSecure, signed: true, sameSite: true })
-        res.setHeader("set-cookie", [`JWT_TOKEN=${token}; httponly; samesite=Lax secure=${isSecure}`])
+        res.setHeader("set-cookie", [`JWT_TOKEN=${token}; httponly; SameSite=Lax secure=${isSecure}`])
         res.status(200).json({ 'TOKEN': token, 'REFRESH_TOKEN': refreshtoken })
     } else {
         // si son nulos entonces los datos son incorrectos.
