@@ -2,7 +2,7 @@
   <div class="carousel">
     <v-carousel
       cycle
-      height="757"
+      :height="800"
       hide-delimiter-background
       show-arrows-on-hover
     >
@@ -40,6 +40,18 @@ export default {
         },
       ],
     };
+  },
+  created() {
+
+  navigator.geolocation.getCurrentPosition(
+     position => {
+       console.log(position.coords.latitude);
+       console.log(position.coords.longitude);
+     },
+     error => {
+       console.log(error.message);
+     },
+  )   
   },
 };
 </script>

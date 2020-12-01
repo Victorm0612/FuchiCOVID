@@ -4,7 +4,6 @@ const keys = require(path.join(__dirname, '../config/keys'));
 const jwt = require('jsonwebtoken');
 const express = require('express')
 const cookieParser = require('cookie-parser');
-const { prependOnceListener } = require('process');
 app = express()
 app.use(cookieParser(process.env.COOKIE_SECRET))
 
@@ -44,13 +43,123 @@ const login = async(req, res) => {
 const logout = async(req, res) => {
     //Validando que el token sea correcto ------
     const token = req.body.refreshToken;
-    console.log(req)
     if (token) {
         //Finaliza validación del token -----
         res.cookie('JWT_TOKEN', null) // Cambio su valor a nulo pues de esta manera si no se borra del navegador, queda obsoleto.
         res.clearCookie('JWT_TOKEN'); // Elimino la cookie.
         res.send({ "RES": "logged out" })
 
+    } else {
+        res.status(403).json({ 'RES': 'ERROR' })
+    }
+};
+
+const getFun = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.signedCookies.JWT_TOKEN
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null || user.type === 2)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            // Finaliza validación del token -----
+            const response = await pool.query('SELECT * FROM funcionario');
+            res.json(response.rows);
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR TOKEN VACIO' })
+    }
+};
+
+const getFunById = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.signedCookies.JWT_TOKEN
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null || user.type === 2)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            // Finaliza validación del token -----
+            const id = req.params.id
+            try {
+                const response = await pool.query(`SELECT * FROM funcionario WHERE id_funcionario='${id}'`);
+                res.json(response.rows)
+            } catch (error) {
+                res.status(403).json({ 'RES': 'ERROR, NO SE ENCUENTRA EL FUNCIONARIO' })
+            }
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR TOKEN NULO' })
+    }
+};
+
+const createFun = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.signedCookies.JWT_TOKEN
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null || user.type === 2)
+            res.status(403).json({ 'RES': 'ERROR DE USUARIO' })
+        else {
+            // Finaliza validación del token -----
+            const { nombre_funcionario, apellido_funcionario, email, contrasenia } = req.body;
+            try {
+                await pool.query(
+                    `INSERT INTO funcionario(nombre_funcionario, apellido_funcionario, email, contrasenia) VALUES('${nombre_funcionario}','${apellido_funcionario}','${email}','${contrasenia}')`
+                );
+                res.json(req.body);
+            } catch (error) {
+                res.json({ 'RES': 'ERROR AL REGISTRAR FUNCIONARIO' + error });
+            }
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR CON TOKEN' })
+    }
+};
+
+const updateFun = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.signedCookies.JWT_TOKEN
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null || user.type === 2)
+            res.status(403).json({ 'RES': 'ERROR DE USUARIO' })
+        else {
+            // Finaliza validación del token -----
+            const { id_funcionario, nombre_funcionario, apellido_funcionario, email, contrasenia } = req.body;
+            try {
+                await pool.query(
+                    `UPDATE funcionario SET nombre_funcionario='${nombre_funcionario}', apellido_funcionario='${apellido_funcionario}', email='${email}', contrasenia='${contrasenia}' WHERE id_funcionario='${id_funcionario}'`
+                );
+                res.json(req.body);
+            } catch (error) {
+                res.json({ 'RES': 'ERROR AL REGISTRAR FUNCIONARIO' + error });
+            }
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR CON TOKEN' })
+    }
+};
+
+const deleteFun = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.signedCookies.JWT_TOKEN
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null || user.type === 2)
+            res.status(403).json({ 'RES': 'ERROR' })
+        else {
+            // Finaliza validación del token -----
+            const id = req.params.id;
+            try {
+                await pool.query(
+                    `DELETE FROM funcionario WHERE id_funcionario = ${id}`
+                );
+                res.json({ 'RES': 'BORRADO' });
+            } catch (error) {
+                res.json({ 'RES': 'NO SE ENCUENTRA' });
+            }
+        }
     } else {
         res.status(403).json({ 'RES': 'ERROR' })
     }
@@ -77,7 +186,6 @@ const getPros = async(req, res) => {
 const getProById = async(req, res) => {
     //Validando que el token sea correcto ------
     const token = req.signedCookies.JWT_TOKEN
-    console.log(token)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -93,7 +201,6 @@ const getProById = async(req, res) => {
             }
         }
     } else {
-        console.log(req)
         res.status(403).json({ 'RES': 'ERROR TOKEN NULO' })
     }
 };
@@ -243,9 +350,9 @@ const createPacient = async(req, res) => {
             res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
         else {
             // Finaliza validación del token -----
-            const { num_id, tipo_id, nombre_completo, direccion, ciudad, barrio, id_doctor, geolocalizacion, num_personas_convivencia, hipotesis } = req.body
+            const { num_id, tipo_id, nombre_completo, edad, direccion, ciudad, barrio, id_doctor, geolocalizacion, num_personas_convivencia, hipotesis } = req.body
             try {
-                pool.query(`INSERT INTO paciente(num_id, tipo_id, nombre_completo, direccion, ciudad, barrio, id_doctor, geolocalizacion, num_personas_convivencia, hipotesis) VALUES('${num_id}', '${tipo_id}', '${nombre_completo}', '${direccion}', '${ciudad}', '${barrio}', '${id_doctor}', '${geolocalizacion}', '${num_personas_convivencia}', '${hipotesis}')`);
+                pool.query(`INSERT INTO paciente(num_id, tipo_id, nombre_completo, edad, direccion, ciudad, barrio, id_doctor, geolocalizacion, num_personas_convivencia, hipotesis) VALUES('${num_id}', '${tipo_id}', '${nombre_completo}','${edad}', '${direccion}', '${ciudad}', '${barrio}', '${id_doctor}', '${geolocalizacion}', '${num_personas_convivencia}', '${hipotesis}')`);
                 res.json(req.body);
             } catch (error) {
                 res.json({ 'RES': 'ERROR AL REGISTRAR PROFESIONAL' + error });
@@ -265,9 +372,9 @@ const updatePacient = async(req, res) => {
             res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
         else {
             // Finaliza validación del token -----
-            const { num_id, tipo_id, nombre_completo, direccion, ciudad, barrio, id_doctor, geolocalizacion, num_personas_convivencia, hipotesis } = req.body
+            const { num_id, tipo_id, nombre_completo, edad, direccion, ciudad, barrio, id_doctor, geolocalizacion, num_personas_convivencia, hipotesis } = req.body
             try {
-                pool.query(`UPDATE paciente SET tipo_id='${tipo_id}', nombre_completo='${nombre_completo}', direccion='${direccion}', ciudad='${ciudad}',barrio='${barrio}' id_doctor='${id_doctor}', geolocalizacion='${geolocalizacion}', num_personas_convivencia='${num_personas_convivencia}',hipotesis='${hipotesis}' WHERE num_id='${num_id}'`);
+                pool.query(`UPDATE paciente SET tipo_id='${tipo_id}', nombre_completo='${nombre_completo}', edad='${edad}', direccion='${direccion}', ciudad='${ciudad}',barrio='${barrio}' id_doctor='${id_doctor}', geolocalizacion='${geolocalizacion}', num_personas_convivencia='${num_personas_convivencia}',hipotesis='${hipotesis}' WHERE num_id='${num_id}'`);
                 res.json({ 'RES': 'ACTUALIZADO' })
             } catch (error) {
                 res.status(403).json({ 'RES': 'ERROR AL ACTUALIZAR PACIENTE ' + error })
@@ -559,6 +666,11 @@ async function validateToken(token, secret) {
 module.exports = {
     login,
     logout,
+    getFun,
+    getFunById,
+    createFun,
+    updateFun,
+    deleteFun,
     getPros,
     createPro,
     getProById,

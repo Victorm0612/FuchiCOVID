@@ -4,6 +4,11 @@ const router = Router();
 const {
     login,
     logout,
+    getFun,
+    getFunById,
+    createFun,
+    updateFun,
+    deleteFun,
     getPros,
     createPro,
     getProById,
@@ -29,6 +34,12 @@ const {
 
 router.post('/login', login);
 router.post('/logout', logout);
+
+router.get('/funcionario', getFun);
+router.get('/funcionario/:id', getFunById);
+router.post('/registrarfuncionario', createFun);
+router.put('/actualizarfuncionario', updateFun);
+router.delete('borrarfuncionario/:id', deleteFun);
 
 
 router.get('/profesional', getPros);

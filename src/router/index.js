@@ -52,33 +52,33 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     if (to.matched.some(route => route.meta.requiresAuth)) {
         if (!store.getters.loggedIn) {
-            next({
-                name: 'Login',
-            })
+            router.push({
+                path: '/login',
+            }).catch(() => {});
         } else if (to.matched.some(route => route.meta.is_pro)) {
             if (store.getters.retrieveUser.type_user == 2) {
                 next()
             } else {
-                next({
-                    name: 'Home'
-                })
+                router.push({
+                    path: '/'
+                }).catch(() => {});
             }
         } else if (to.matched.some(route => route.meta.is_admin)) {
             if (store.getters.retrieveUser.type_user == 1) {
                 next()
             } else {
-                next({
-                    name: 'Home'
-                })
+                router.push({
+                    path: '/'
+                }).catch(() => {});
             }
         } else {
             next()
         }
     } else if (to.matched.some(record => record.meta.requiresVisitor)) {
         if (store.getters.loggedIn) {
-            next({
-                name: 'Home'
-            })
+            router.push({
+                path: '/'
+            }).catch(() => {});
         } else {
             next()
         }
