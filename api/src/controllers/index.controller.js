@@ -61,14 +61,14 @@ const getPros = async(req, res) => {
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
-            res.status(403).json({ 'RES': 'ERROR' })
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
         else {
             // Finaliza validación del token -----
             const response = await pool.query('SELECT * FROM profesional');
             res.json(response.rows);
         }
     } else {
-        res.status(403).json({ 'RES': 'ERROR' })
+        res.status(403).json({ 'RES': 'ERROR TOKEN VACIO' })
     }
 
 };
@@ -106,7 +106,10 @@ const createPro = async(req, res) => {
             res.status(403).json({ 'RES': 'ERROR DE USUARIO' })
         else {
             // Finaliza validación del token -----
-            const { num_id, tipo_id, nombre, direccion, barrio, registrado_por, id_universidad, id_entidadSalud, email, contrasenia } = req.body;
+            const { num_id, tipo_id, nombre, direccion, barrio, registrado_por, universidad, entidadSalud, email, contrasenia } = req.body;
+            let response = await pool.query(`SELECT * FROM crearUniversidadyEntidad('${universidad}','${entidadSalud}')`)
+            const id_universidad = response.rows[0].id_u;
+            const id_entidadSalud = response.rows[0].id_e;
             try {
                 await pool.query(
                     `INSERT INTO profesional(num_id,tipo_id,nombre_profesional,direccion,barrio,registrado_por,id_universidad,id_entidadSalud,email,contrasenia) VALUES('${num_id}','${tipo_id}','${nombre}','${direccion}','${barrio}','${registrado_por}','${id_universidad}','${id_entidadSalud}','${email}','${contrasenia}')`
@@ -138,11 +141,14 @@ const updatePro = async(req, res) => {
                 direccion,
                 barrio,
                 registrado_por,
-                id_universidad,
-                id_entidadSalud,
+                universidad,
+                entidadSalud,
                 email,
                 contrasenia
             } = req.body;
+            let response = await pool.query(`SELECT * FROM crearUniversidadyEntidad('${universidad}','${entidadSalud}')`)
+            const id_universidad = response.rows[0].id_u;
+            const id_entidadSalud = response.rows[0].id_e;
             try {
                 const response = await pool.query(
                     `UPDATE profesional SET tipo_id = '${tipo_id}', nombre_profesional='${nombre}', direccion = '${direccion}', barrio='${barrio}', registrado_por=${registrado_por}, id_universidad=${id_universidad}, id_entidadSalud=${id_entidadSalud}, email='${email}', contrasenia='${contrasenia}' WHERE num_id = '${num_id}'`
@@ -169,7 +175,7 @@ const deletePro = async(req, res) => {
             const id = req.params.id;
             try {
                 await pool.query(
-                    `DELETE FROM profesional WHERE id_profesional = ${id}`
+                    `DELETE FROM profesional WHERE num_id = ${id}`
                 );
                 res.json({ 'RES': 'BORRADO' });
             } catch (error) {
