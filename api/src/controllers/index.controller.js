@@ -54,6 +54,40 @@ const logout = async(req, res) => {
     }
 };
 
+const getEntidad = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.signedCookies.JWT_TOKEN
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            // Finaliza validación del token -----
+            const response = await pool.query('SELECT * FROM entidad_salud');
+            res.json(response.rows);
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR TOKEN VACIO' })
+    }
+};
+
+const getUniversidad = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.signedCookies.JWT_TOKEN
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null || user.type === 2)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            // Finaliza validación del token -----
+            const response = await pool.query('SELECT * FROM universidad');
+            res.json(response.rows);
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR TOKEN VACIO' })
+    }
+};
+
 const getFun = async(req, res) => {
     //Validando que el token sea correcto ------
     const token = req.signedCookies.JWT_TOKEN
@@ -666,6 +700,8 @@ async function validateToken(token, secret) {
 module.exports = {
     login,
     logout,
+    getUniversidad,
+    getEntidad,
     getFun,
     getFunById,
     createFun,

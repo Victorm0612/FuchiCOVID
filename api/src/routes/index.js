@@ -4,6 +4,8 @@ const router = Router();
 const {
     login,
     logout,
+    getUniversidad,
+    getEntidad,
     getFun,
     getFunById,
     createFun,
@@ -34,6 +36,9 @@ const {
 
 router.post('/login', login);
 router.post('/logout', logout);
+
+router.get('/entidad', getEntidad);
+router.get('/universidad', getUniversidad);
 
 router.get('/funcionario', getFun);
 router.get('/funcionario/:id', getFunById);

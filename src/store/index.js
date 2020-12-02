@@ -6,8 +6,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        showAdminMenu: false,
+        moduleTitle: "Panel de control",
         user: JSON.parse(localStorage.getItem('user')) || {
             id_user: null,
+            name: null,
+            email: null,
             refreshToken: null,
             type_user: null
         },
@@ -18,12 +22,26 @@ export default new Vuex.Store({
         },
         retrieveUser(state) {
             return state.user
-        }
+        },
+        showAdminMenu(state) {
+            return state.showAdminMenu
+        },
+        moduleTitle(state) {
+            return state.moduleTitle
+        },
     },
     mutations: {
+        setShowAdminMenu(state, value) {
+            state.showAdminMenu = value
+        },
+        setModuleTitle(state, title) {
+            state.moduleTitle = title
+        },
         destroyToken(state) {
             state.user = {
                 id_user: null,
+                name: null,
+                email: null,
                 refreshToken: null,
                 type_user: null
             }
@@ -61,6 +79,8 @@ export default new Vuex.Store({
                     .then(res => {
                         const user = {
                             id_user: res.data.id,
+                            name: null,
+                            email: null,
                             refreshToken: res.data.refreshToken,
                             type_user: res.data.type
                         }
@@ -72,6 +92,12 @@ export default new Vuex.Store({
                     })
             })
         },
+        checkIfAdmin({
+            commit
+        }) {
+            return (window.location.href.indexOf("dashboard") > -1) ? commit('setShowAdminMenu', true) :
+                commit('setShowAdminMenu', false);
+        }
     },
     modules: {}
 })
