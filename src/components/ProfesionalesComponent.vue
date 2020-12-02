@@ -14,163 +14,158 @@
           <v-icon small @click="deleteItem(item)"> fas fa-trash-alt </v-icon>
         </template>
       </v-data-table>
-              <v-dialog v-model="dialog" fullscreen persistent>
-          <v-row class="d-flex" align="center" justify="center">
-            <v-col cols="12" sm="8" md="6">
-              <v-card class="elevation-12 __b-20 pa-4">
-                <v-card-text>
-                  <v-form>
-                    <v-row>
-                      <v-col>
-                        <v-text-field
-                          label="Nombre"
-                          v-model="editedItem.nombre_profesional"
-                          :rules="[rules.required]"
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="6">
-                        <v-select
-                          label="Tipo de documento"
-                          v-model="editedItem.tipo_id"
-                          :items="docType"
-                        >
-                        </v-select>
-                      </v-col>
-                      <v-col cols="6">
-                        <v-text-field
-                          v-model="editedItem.num_id"
-                          :rules="[rules.required]"
-                          label="Número de documento"
-                          @keypress="isNumber($event)"
-                          required
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col>
-                        <v-text-field
-                          label="Dirección"
-                          v-model="editedItem.direccion"
-                          :rules="[rules.required]"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col>
-                        <v-text-field
-                          label="Barrio"
-                          v-model="editedItem.barrio"
-                          :rules="[rules.required]"
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col>
-                        <v-select
-                          label="Universidad"
-                          :items="listU"
-                          v-model="editedItem.universidad"
-                        ></v-select>
-                      </v-col>
-                      <v-col>
-                        <v-select
-                          label="Entidad de Salud"
-                          :items="listE"
-                          v-model="editedItem.entidadSalud"
-                        ></v-select>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col>
-                        <v-text-field
-                          label="Correo Electrónico"
-                          v-model="editedItem.email"
-                          :rules="[rules.required, rules.emailRules]"
-                          required
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col>
-                        <v-text-field
-                          label="Contraseña"
-                          v-model="editedItem.password"
-                          :rules="[
-                            rules.required,
-                            rules.passwordRules,
-                            passwordConfirmationRule,
-                          ]"
-                          :append-icon="
-                            show ? 'fas fa-eye' : 'fas fa-eye-slash'
-                          "
-                          :type="show ? 'text' : 'password'"
-                          @click:append="show = !show"
-                          required
-                        ></v-text-field>
-                      </v-col>
-                      <v-col>
-                        <v-text-field
-                          label="Confirmar contraseña"
-                          v-model="editedItem.confirmPassword"
-                          :rules="[
-                            rules.required,
-                            rules.passwordRules,
-                            passwordConfirmationRule,
-                          ]"
-                          :append-icon="
-                            show ? 'fas fa-eye' : 'fas fa-eye-slash'
-                          "
-                          :type="show ? 'text' : 'password'"
-                          @click:append="show = !show"
-                          required
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" text @click="close">
-                            Cancel
-                          </v-btn>
-                          <v-btn color="blue darken-1" text @click="save">
-                            Save
-                          </v-btn>
-                        </v-card-actions>
+      <v-dialog v-model="dialog" fullscreen persistent>
+        <v-row class="d-flex" align="center" justify="center">
+          <v-col cols="12" sm="8" md="6">
+            <v-card class="elevation-12 __b-20 pa-4">
+              <v-card-text>
+                <v-form>
+                  <v-row>
+                    <v-col>
+                      <v-text-field
+                        label="Nombre"
+                        v-model="editedItem.nombre_profesional"
+                        :rules="[rules.required]"
+                      ></v-text-field>
                     </v-col>
-                    </v-row>
-                  </v-form>
-                </v-card-text>
-              </v-card>
-              <v-dialog v-model="dialog_Error" width="300">
-            
-                <v-alert
-                  style="margin-bottom: 0"
-                  type="error"
-                  transition="scale-transition"
+                  </v-row>
+                  <v-row>
+                    <v-col cols="6">
+                      <v-select
+                        label="Tipo de documento"
+                        v-model="editedItem.tipo_id"
+                        :items="docType"
+                      >
+                      </v-select>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-text-field
+                        v-model="editedItem.num_id"
+                        :rules="[rules.required]"
+                        label="Número de documento"
+                        @keypress="isNumber($event)"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-text-field
+                        label="Dirección"
+                        v-model="editedItem.direccion"
+                        :rules="[rules.required]"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col>
+                      <v-text-field
+                        label="Barrio"
+                        v-model="editedItem.barrio"
+                        :rules="[rules.required]"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-select
+                        label="Universidad"
+                        :items="listU"
+                        v-model="editedItem.universidad"
+                      ></v-select>
+                    </v-col>
+                    <v-col>
+                      <v-select
+                        label="Entidad de Salud"
+                        :items="listE"
+                        v-model="editedItem.entidadSalud"
+                      ></v-select>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-text-field
+                        label="Correo Electrónico"
+                        v-model="editedItem.email"
+                        :rules="[rules.required, rules.emailRules]"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-text-field
+                        label="Contraseña"
+                        v-model="editedItem.password"
+                        :rules="[
+                          rules.required,
+                          rules.passwordRules,
+                          passwordConfirmationRule,
+                        ]"
+                        :append-icon="show ? 'fas fa-eye' : 'fas fa-eye-slash'"
+                        :type="show ? 'text' : 'password'"
+                        @click:append="show = !show"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col>
+                      <v-text-field
+                        label="Confirmar contraseña"
+                        v-model="editedItem.confirmPassword"
+                        :rules="[
+                          rules.required,
+                          rules.passwordRules,
+                          passwordConfirmationRule,
+                        ]"
+                        :append-icon="show ? 'fas fa-eye' : 'fas fa-eye-slash'"
+                        :type="show ? 'text' : 'password'"
+                        @click:append="show = !show"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="close">
+                          Cancel
+                        </v-btn>
+                        <v-btn color="blue darken-1" text @click="save">
+                          Save
+                        </v-btn>
+                      </v-card-actions>
+                    </v-col>
+                  </v-row>
+                </v-form>
+              </v-card-text>
+            </v-card>
+            <v-dialog v-model="dialog_Error" width="300">
+              <v-alert
+                style="margin-bottom: 0"
+                type="error"
+                transition="scale-transition"
+              >
+                Por favor, revise los datos ingresados e inténtelo nuevamente.
+              </v-alert>
+            </v-dialog>
+            <v-dialog v-model="formUniversidad" max-width="600px">
+              <v-card class="elevation-12 __b-20 pa-4">
+                <v-card-title
+                  ><span class="headline"
+                    >Registro de Universidad</span
+                  ></v-card-title
                 >
-                  Por favor, revise los datos ingresados e inténtelo nuevamente.
-                </v-alert>
-              </v-dialog>
-              <v-dialog v-model="formUniversidad" max-width="600px">
-                <v-card class="elevation-12 __b-20 pa-4">
-                  <v-card-title
-                    ><span class="headline"
-                      >Registro de Universidad</span
-                    ></v-card-title
-                  >
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col>
-                          <v-text-field
-                            label="Nombre universidad"
-                            v-model="editedItem.universidad"
-                            required
-                          >
-                          </v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                          <v-col>
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col>
+                        <v-text-field
+                          label="Nombre universidad"
+                          v-model="editedItem.universidad"
+                          required
+                        >
+                        </v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
                         <v-btn
                           depressed
                           class="text-none px-5"
@@ -178,33 +173,33 @@
                           @click="saveU"
                           >Confirmar</v-btn
                         >
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card-text>
-                </v-card>
-              </v-dialog>
-              <v-dialog v-model="formEntidad" max-width="600px">
-                <v-card class="elevation-12 __b-20 pa-4">
-                  <v-card-title
-                    ><span class="headline"
-                      >Registro de Entidad de Salud</span
-                    ></v-card-title
-                  >
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col>
-                          <v-text-field
-                            label="Nombre de la entidad"
-                            v-model="editedItem.entidadSalud"
-                            required
-                          >
-                          </v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                          <v-col>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+            <v-dialog v-model="formEntidad" max-width="600px">
+              <v-card class="elevation-12 __b-20 pa-4">
+                <v-card-title
+                  ><span class="headline"
+                    >Registro de Entidad de Salud</span
+                  ></v-card-title
+                >
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col>
+                        <v-text-field
+                          label="Nombre de la entidad"
+                          v-model="editedItem.entidadSalud"
+                          required
+                        >
+                        </v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
                         <v-btn
                           depressed
                           class="text-none px-5"
@@ -212,27 +207,33 @@
                           @click="saveE"
                           >Confirmar</v-btn
                         >
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card-text>
-                </v-card>
-              </v-dialog>
-            </v-col>
-          </v-row>
-        </v-dialog>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+          </v-col>
+        </v-row>
+      </v-dialog>
     </v-col>
-                 <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="headline">Está seguro que desea eliminarlo?</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Cancelar</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+    <v-dialog v-model="dialogDelete" max-width="500px">
+      <v-card>
+        <v-card-title class="headline"
+          >Está seguro que desea eliminarlo?</v-card-title
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeDelete"
+            >Cancelar</v-btn
+          >
+          <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+            >OK</v-btn
+          >
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -319,31 +320,30 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete();
     },
-
   },
   created() {
-      this.initialData()
+    this.initialData();
   },
   computed: {
     formUniversidad: {
-        get(){
-            return this.editedItem.universidad === "Otra universidad..." ? true : false;
-        },
-        set(value)
-        {
-            this.editedItem.universidad = value;
-        }
-      
+      get() {
+        return this.editedItem.universidad === "Otra universidad..."
+          ? true
+          : false;
+      },
+      set(value) {
+        this.editedItem.universidad = value;
+      },
     },
     formEntidad: {
-        get()
-        {
-            return this.editedItem.entidadSalud === "Otra entidad de salud..." ? true : false;
-        },
-        set(value)
-        {
-            this.editedItem.entidadSalud = value;
-        }
+      get() {
+        return this.editedItem.entidadSalud === "Otra entidad de salud..."
+          ? true
+          : false;
+      },
+      set(value) {
+        this.editedItem.entidadSalud = value;
+      },
     },
     passwordConfirmationRule() {
       return (
@@ -353,25 +353,25 @@ export default {
     },
   },
   methods: {
-    initialData(){
-    axios.get("universidad/").then((response) => {
-      for (let universidades of response.data) {
-        this.listU.push(universidades.nombre_universidad);
-      }
-      this.listU.push("Otra universidad...")
-    });
-    axios.get("entidad/").then((response) => {
-      for (let entidades of response.data) {
-        this.listE.push(entidades.nombre_entidad);
-      }
-      this.listE.push("Otra entidad de salud...")
-    });
-    axios.get("profesional/").then((response) => {
-      console.log(response.data);
-      for (let profesional of response.data) {
-        this.profesionals.push(profesional);
-      }
-    });
+    initialData() {
+      axios.get("universidad/").then((response) => {
+        for (let universidades of response.data) {
+          this.listU.push(universidades.nombre_universidad);
+        }
+        this.listU.push("Otra universidad...");
+      });
+      axios.get("entidad/").then((response) => {
+        for (let entidades of response.data) {
+          this.listE.push(entidades.nombre_entidad);
+        }
+        this.listE.push("Otra entidad de salud...");
+      });
+      axios.get("profesional/").then((response) => {
+        console.log(response.data);
+        for (let profesional of response.data) {
+          this.profesionals.push(profesional);
+        }
+      });
     },
     saveU() {
       this.listU.push(this.formU);
@@ -390,8 +390,8 @@ export default {
         direccion: item.direccion,
         barrio: item.barrio,
         registrado_por: item.registrado_por,
-        universidad: this.listU[item.id_universidad-1],
-        entidadSalud: this.listE[item.id_entidadsalud-1],
+        universidad: this.listU[item.id_universidad - 1],
+        entidadSalud: this.listE[item.id_entidadsalud - 1],
         email: item.email,
         password: item.contrasenia,
         confirmPassword: item.contrasenia,
@@ -406,19 +406,21 @@ export default {
     },
 
     deleteItemConfirm() {
-      axios.delete('borrarprofesional/'+this.profesionals[this.editedIndex].num_id)
-      .then(()=>{
-                this.profesionals.splice(this.editedIndex, 1);
-      this.closeDelete();
-      })
-      .catch(error=>{
-          console.log(error)
-      })
-
+      axios
+        .delete(
+          "borrarprofesional/" + this.profesionals[this.editedIndex].num_id
+        )
+        .then(() => {
+          this.profesionals.splice(this.editedIndex, 1);
+          this.closeDelete();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
 
     close() {
-      this.dialog=false;
+      this.dialog = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -433,28 +435,29 @@ export default {
       });
     },
     save() {
-    axios.put('actualizarprofesional/',{
-                num_id: parseInt(this.editedItem.num_id),
-                tipo_id: this.docType.indexOf(this.editedItem.tipo_id),
-                nombre: this.editedItem.nombre_profesional,
-                direccion: this.editedItem.direccion,
-                barrio: this.editedItem.barrio,
-                universidad: this.editedItem.universidad,
-                entidadSalud: this.editedItem.entidadSalud,
-                email: this.editedItem.email,
-                contrasenia: this.editedItem.password
-    })
-    .then(()=>{
-        if (this.editedIndex > -1) {
-        Object.assign(this.profesionals[this.editedIndex], this.editedItem);
-      } else {
-        this.profesionals.push(this.editedItem);
-      }
-      this.close();
-    })
-    .catch(error=>{
-        console.log(error)
-    })
+      axios
+        .put("actualizarprofesional/", {
+          num_id: parseInt(this.editedItem.num_id),
+          tipo_id: this.docType.indexOf(this.editedItem.tipo_id),
+          nombre: this.editedItem.nombre_profesional,
+          direccion: this.editedItem.direccion,
+          barrio: this.editedItem.barrio,
+          universidad: this.editedItem.universidad,
+          entidadSalud: this.editedItem.entidadSalud,
+          email: this.editedItem.email,
+          contrasenia: this.editedItem.password,
+        })
+        .then(() => {
+          if (this.editedIndex > -1) {
+            Object.assign(this.profesionals[this.editedIndex], this.editedItem);
+          } else {
+            this.profesionals.push(this.editedItem);
+          }
+          this.close();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };
