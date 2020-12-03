@@ -89,13 +89,58 @@ export default new Vuex.Store({
                             type_user: res.data.type
                         }
                         context.commit('assignDataUser', user)
-                        console.log(res)
+                        context.dispatch('getDataUser')
                         resolve(res)
                     })
                     .catch(err => {
                         reject(err)
                     })
             })
+        },
+        getDataUser(context) {
+            if (context.getters.retrieveUser.type_user == 1) {
+                axios
+                    .get("funcionario/" + context.getters.retrieveUser.id_user, {
+                        headers: {
+                            'Authorization': 'Token ' + context.getters.retrieveUser.token
+                        }
+                    })
+                    .then((response) => {
+                        console.log(response)
+                        context.commit('assignDataUser', {
+                            id_user: context.getters.retrieveUser.id_user,
+                            name: response.data[0].nombre_funcionario,
+                            email: response.data[0].email,
+                            token: context.getters.retrieveUser.token,
+                            refreshToken: context.getters.retrieveUser.refreshToken,
+                            type_user: context.getters.retrieveUser.type_user
+                        })
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            } else if (context.getters.retrieveUser.type_user == 2) {
+                axios
+                    .get("profesional/" + context.getters.retrieveUser.id_user, {
+                        headers: {
+                            'Authorization': 'Token ' + context.getters.retrieveUser.token
+                        }
+                    })
+                    .then((response) => {
+                        console.log(response)
+                        context.commit('assignDataUser', {
+                            id_user: context.getters.retrieveUser.id_user,
+                            name: response.data[0].nombre_profesional,
+                            email: response.data[0].email,
+                            token: context.getters.retrieveUser.token,
+                            refreshToken: context.getters.retrieveUser.refreshToken,
+                            type_user: context.getters.retrieveUser.type_user
+                        })
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
         },
         checkIfAdmin({
             commit

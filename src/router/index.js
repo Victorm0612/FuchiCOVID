@@ -55,16 +55,8 @@ router.beforeEach((to, from, next) => {
             router.push({
                 path: '/login',
             }).catch(() => {});
-        } else if (to.matched.some(route => route.meta.is_pro)) {
-            if (store.getters.retrieveUser.type_user == 2) {
-                next()
-            } else {
-                router.push({
-                    path: '/'
-                }).catch(() => {});
-            }
         } else if (to.matched.some(route => route.meta.is_admin)) {
-            if (store.getters.retrieveUser.type_user == 1) {
+            if (store.getters.retrieveUser.type_user == 1 || store.getters.retrieveUser.type_user == 2) {
                 next()
             } else {
                 router.push({

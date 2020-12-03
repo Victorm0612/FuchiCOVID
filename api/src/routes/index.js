@@ -2,6 +2,7 @@ const { Router } = require('express');
 const router = Router();
 
 const {
+    refresh_token,
     login,
     logout,
     getUniversidad,
@@ -33,6 +34,8 @@ const {
     getMedicamentos,
     updateMedicamento
 } = require('../controllers/index.controller')
+
+router.post('/refresh', refresh_token);
 
 router.post('/login', login);
 router.post('/logout', logout);

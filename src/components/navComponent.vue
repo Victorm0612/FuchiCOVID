@@ -42,6 +42,12 @@ export default {
       ]
     };
   },
+  created() {
+    this.timeToExp();
+  },
+  updated() {
+    this.timeToExp();
+  },
   methods: {
     moveToRoute: function(route) {
       if (this.$router.currentRoute.name !== route) {
@@ -49,7 +55,17 @@ export default {
       }else{
         this.drawer = false;
       }
-    }
+    },
+        timeToExp(){
+      if(this.loggedIn){
+        setTimeout(() => {
+          let exp = new Date(VueJwtDecode.decode(this.$store.getters.retrieveUser.token).exp * 1000);
+          let actual = new Date()
+          let totalTime = exp.getTime() - actual.getTime()
+          axios.post('refresh/',{refreshToken: this.$store.getters.retrieveUser.refreshToken})
+          }, totalTime);
+      }
+    },
   },
   computed: {
     isMobile() {

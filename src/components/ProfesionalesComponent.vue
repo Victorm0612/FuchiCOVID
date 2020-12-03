@@ -249,10 +249,10 @@ export default {
       num_id: "",
       formU: "",
       formE: "",
-      valid: false,
-      show: false,
       listU: [],
       listE: [],
+      valid: false,
+      show: false,
       docType: [
         "Cédula de ciudadanía",
         "Cédula de extranjería",
@@ -354,24 +354,42 @@ export default {
   },
   methods: {
     initialData() {
-      axios.get("universidad/").then((response) => {
-        for (let universidades of response.data) {
-          this.listU.push(universidades.nombre_universidad);
-        }
-        this.listU.push("Otra universidad...");
-      });
-      axios.get("entidad/").then((response) => {
-        for (let entidades of response.data) {
-          this.listE.push(entidades.nombre_entidad);
-        }
-        this.listE.push("Otra entidad de salud...");
-      });
-      axios.get("profesional/").then((response) => {
-        console.log(response.data);
-        for (let profesional of response.data) {
-          this.profesionals.push(profesional);
-        }
-      });
+      axios
+        .get("universidad/", {
+          headers: {
+            Authorization: "Token " + this.$store.getters.retrieveUser.token,
+          },
+        })
+        .then((response) => {
+          for (let universidades of response.data) {
+            this.listU.push(universidades.nombre_universidad);
+          }
+          this.listU.push("Otra universidad...");
+        });
+      axios
+        .get("entidad/", {
+          headers: {
+            Authorization: "Token " + this.$store.getters.retrieveUser.token,
+          },
+        })
+        .then((response) => {
+          for (let entidades of response.data) {
+            this.listE.push(entidades.nombre_entidad);
+          }
+          this.listE.push("Otra entidad de salud...");
+        });
+      axios
+        .get("profesional/", {
+          headers: {
+            Authorization: "Token " + this.$store.getters.retrieveUser.token,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          for (let profesional of response.data) {
+            this.profesionals.push(profesional);
+          }
+        });
     },
     saveU() {
       this.listU.push(this.formU);
@@ -408,7 +426,12 @@ export default {
     deleteItemConfirm() {
       axios
         .delete(
-          "borrarprofesional/" + this.profesionals[this.editedIndex].num_id
+          "borrarprofesional/" + this.profesionals[this.editedIndex].num_id,
+          {
+            headers: {
+              Authorization: "Token " + this.$store.getters.retrieveUser.token,
+            },
+          }
         )
         .then(() => {
           this.profesionals.splice(this.editedIndex, 1);
@@ -436,17 +459,25 @@ export default {
     },
     save() {
       axios
-        .put("actualizarprofesional/", {
-          num_id: parseInt(this.editedItem.num_id),
-          tipo_id: this.docType.indexOf(this.editedItem.tipo_id),
-          nombre: this.editedItem.nombre_profesional,
-          direccion: this.editedItem.direccion,
-          barrio: this.editedItem.barrio,
-          universidad: this.editedItem.universidad,
-          entidadSalud: this.editedItem.entidadSalud,
-          email: this.editedItem.email,
-          contrasenia: this.editedItem.password,
-        })
+        .put(
+          "actualizarprofesional/",
+          {
+            num_id: parseInt(this.editedItem.num_id),
+            tipo_id: this.docType.indexOf(this.editedItem.tipo_id),
+            nombre: this.editedItem.nombre_profesional,
+            direccion: this.editedItem.direccion,
+            barrio: this.editedItem.barrio,
+            universidad: this.editedItem.universidad,
+            entidadSalud: this.editedItem.entidadSalud,
+            email: this.editedItem.email,
+            contrasenia: this.editedItem.password,
+          },
+          {
+            headers: {
+              Authorization: "Token " + this.$store.getters.retrieveUser.token,
+            },
+          }
+        )
         .then(() => {
           if (this.editedIndex > -1) {
             Object.assign(this.profesionals[this.editedIndex], this.editedItem);

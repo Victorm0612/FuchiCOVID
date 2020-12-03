@@ -51,47 +51,9 @@ export default {
       ],
     };
   },
-  watch:{
-    changeData(){
-      this.getDataUser()
-    }
-  },
-  created() {
-    this.getDataUser();
-  },
   methods: {
     changeComponent(listTitle) {
       this.$store.commit('setModuleTitle', listTitle);
-    },
-    getDataUser() {
-      if (this.retrieveTypeUser == 1) {
-        axios
-          .get("funcionario/" + this.retrieveIdUser)
-          .then((response) => {
-            this.name = response.data[0].nombre_funcionario;
-            this.email = response.data[0].email;
-            this.$store.commit('assignDataUser',{
-              id_user: this.retrieveIdUser,
-                name: response.data[0].nombre_funcionario,
-                email: response.data[0].email,
-                refreshToken: this.$store.getters.retrieveUser.refreshToken,
-                type_user: this.retrieveTypeUser
-            })
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else if (this.retrieveTypeUser == 2) {
-        axios
-          .get("profesional/" + this.retrieveIdUser)
-          .then((response) => {
-            this.name = response.data[0].nombre_profesional;
-            this.email = response.data[0].email;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
     },
   },
   computed: {

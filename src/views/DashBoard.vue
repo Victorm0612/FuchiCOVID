@@ -91,7 +91,7 @@ import InstagramCardComponent from "@/components/dashboard-components/InstagramC
 <style scoped>
 #dashboard {
     
-  height: 116vh;
+  height: 125vh;
   background-image: linear-gradient(
       to bottom,
       rgba(2, 5, 22, 0.52),

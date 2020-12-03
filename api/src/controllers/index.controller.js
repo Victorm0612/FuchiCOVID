@@ -15,6 +15,27 @@ const pool = new Pool({
     ssl: process.env.DATABASE_URL ? true : false
 });
 
+const refresh_token = async(req, res) => {
+    const token = req.body.refreshToken;
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_REFRESH_SECRET);
+        if (user === null)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            // Finaliza validación del token -----
+            //sign my jwt 
+            const payLoad = { "id": user.id, "type": user.type };
+            //sign a brand new accesstoken and update the cookie
+            const token = jwt.sign(payLoad, process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: '1h' })
+            const refreshtoken = jwt.sign(payLoad, process.env.JWT_REFRESH_SECRET, { algorithm: 'HS256' })
+                //maybe check if it succeeds..                          
+            res.status(200).json({ token: token, refreshToken: refreshtoken, id: id_user, type: type_user })
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR TOKEN VACIO' })
+    }
+};
+
 const login = async(req, res) => {
     // Se loguea usando la funcion almacenada login la cual devuelve id y tipo de usuario
     const { email, contrasenia } = req.body;
@@ -36,7 +57,7 @@ const login = async(req, res) => {
         return;
     }
 
-}
+};
 
 const logout = async(req, res) => {
     //Validando que el token sea correcto ------
@@ -73,7 +94,7 @@ const getUniversidad = async(req, res) => {
     const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
-        if (user === null || user.type === 2)
+        if (user === null)
             res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
         else {
             // Finaliza validación del token -----
@@ -201,7 +222,7 @@ const getPros = async(req, res) => {
     const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
-        if (user === null || user.type === 2)
+        if (user === null)
             res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
         else {
             // Finaliza validación del token -----
@@ -219,7 +240,7 @@ const getProById = async(req, res) => {
     const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
-        if (user === null || user.type === 2)
+        if (user === null)
             res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
         else {
             // Finaliza validación del token -----
@@ -270,7 +291,7 @@ const updatePro = async(req, res) => {
     const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
-        if (user === null || user.type === 2)
+        if (user === null)
             res.status(403).json({ 'RES': 'ERROR CON USUARIO' })
         else {
             // Finaliza validación del token -----
@@ -309,7 +330,7 @@ const deletePro = async(req, res) => {
     const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
-        if (user === null || user.type === 2)
+        if (user === null)
             res.status(403).json({ 'RES': 'ERROR' })
         else {
             // Finaliza validación del token -----
@@ -334,7 +355,7 @@ const getPacient = async(req, res) => {
     const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
-        if (user === null || user.type === 2)
+        if (user === null)
             res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
         else {
             // Finaliza validación del token -----
@@ -355,7 +376,7 @@ const getPacientById = async(req, res) => {
     const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
-        if (user === null || user.type === 2)
+        if (user === null)
             res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
         else {
             // Finaliza validación del token -----
@@ -377,7 +398,7 @@ const createPacient = async(req, res) => {
     const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
-        if (user === null || user.type === 2)
+        if (user === null)
             res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
         else {
             // Finaliza validación del token -----
@@ -695,6 +716,7 @@ async function validateToken(token, secret) {
 };
 
 module.exports = {
+    refresh_token,
     login,
     logout,
     getUniversidad,
