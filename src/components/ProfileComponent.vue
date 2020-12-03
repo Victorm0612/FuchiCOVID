@@ -91,7 +91,7 @@
                 </v-row>
               </v-container>
               <v-row class="justify-center">
-                <v-col cols="12" md="4">
+                <v-col cols="4" md="12" sm="12" xs="12">
                   <v-btn
                     v-if="editProfile"
                     color="primary"
@@ -101,7 +101,7 @@
                     Guardar Cambios
                   </v-btn>
                 </v-col>
-                <v-col cols="12" md="4" @click="cancelChanges">
+                <v-col cols="4" md="12" sm="12" xs="12" @click="cancelChanges">
                   <v-btn v-if="editProfile" color="primary">
                     Cancelar
                   </v-btn>

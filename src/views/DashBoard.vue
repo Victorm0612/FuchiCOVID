@@ -91,7 +91,7 @@ import InstagramCardComponent from "@/components/dashboard-components/InstagramC
 <style scoped>
 #dashboard {
     
-  height: 100vh;
+  height: 116vh;
   background-image: linear-gradient(
       to bottom,
       rgba(2, 5, 22, 0.52),
@@ -100,6 +100,7 @@ import InstagramCardComponent from "@/components/dashboard-components/InstagramC
     url("../assets/familia.jpg");
   background-size: cover;
   background-attachment: fixed;
+  background-repeat: repeat-y;
 }
 h1 {
   padding-bottom: 20px;

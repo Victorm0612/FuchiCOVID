@@ -27,10 +27,8 @@ const login = async(req, res) => {
         const token = jwt.sign(payLoad, process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: '1h' })
         const refreshtoken = jwt.sign(payLoad, process.env.JWT_REFRESH_SECRET, { algorithm: 'HS256' })
 
-        const isSecure = req.app.get('env') != 'development';
 
-        res.cookie('JWT_TOKEN', token, { httpOnly: true, secure: isSecure, signed: true, sameSite: true, expires: false, maxAge: 60 * 60 * 1000 })
-        res.status(200).json({ refreshToken: refreshtoken, id: id_user, type: type_user })
+        res.status(200).json({ token: token, refreshToken: refreshtoken, id: id_user, type: type_user })
 
     } else {
         // si son nulos entonces los datos son incorrectos.
@@ -45,8 +43,7 @@ const logout = async(req, res) => {
     const token = req.body.refreshToken;
     if (token) {
         //Finaliza validación del token -----
-        res.cookie('JWT_TOKEN', null) // Cambio su valor a nulo pues de esta manera si no se borra del navegador, queda obsoleto.
-        res.clearCookie('JWT_TOKEN'); // Elimino la cookie.
+        req.headers.authorization = null
         res.send({ "RES": "logged out" })
 
     } else {
@@ -56,7 +53,7 @@ const logout = async(req, res) => {
 
 const getEntidad = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)
@@ -73,7 +70,7 @@ const getEntidad = async(req, res) => {
 
 const getUniversidad = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -90,7 +87,7 @@ const getUniversidad = async(req, res) => {
 
 const getFun = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -107,7 +104,7 @@ const getFun = async(req, res) => {
 
 const getFunById = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -129,7 +126,7 @@ const getFunById = async(req, res) => {
 
 const createFun = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -153,7 +150,7 @@ const createFun = async(req, res) => {
 
 const updateFun = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -177,7 +174,7 @@ const updateFun = async(req, res) => {
 
 const deleteFun = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -201,7 +198,7 @@ const deleteFun = async(req, res) => {
 
 const getPros = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -219,7 +216,7 @@ const getPros = async(req, res) => {
 
 const getProById = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -241,7 +238,7 @@ const getProById = async(req, res) => {
 
 const createPro = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -270,7 +267,7 @@ const createPro = async(req, res) => {
 
 const updatePro = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -309,7 +306,7 @@ const updatePro = async(req, res) => {
 
 const deletePro = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -334,7 +331,7 @@ const deletePro = async(req, res) => {
 
 const getPacient = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -355,7 +352,7 @@ const getPacient = async(req, res) => {
 
 const getPacientById = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -377,7 +374,7 @@ const getPacientById = async(req, res) => {
 
 const createPacient = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -399,7 +396,7 @@ const createPacient = async(req, res) => {
 
 const updatePacient = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)
@@ -421,7 +418,7 @@ const updatePacient = async(req, res) => {
 
 const deletePacient = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)
@@ -445,7 +442,7 @@ const deletePacient = async(req, res) => {
 
 const getContacts = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)
@@ -462,7 +459,7 @@ const getContacts = async(req, res) => {
 
 const getContactById = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.type === 2)
@@ -484,7 +481,7 @@ const getContactById = async(req, res) => {
 
 const createContact = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)
@@ -506,7 +503,7 @@ const createContact = async(req, res) => {
 
 const updateContact = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)
@@ -528,7 +525,7 @@ const updateContact = async(req, res) => {
 
 const deleteContact = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)
@@ -552,7 +549,7 @@ const deleteContact = async(req, res) => {
 
 const getVisita = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)
@@ -569,7 +566,7 @@ const getVisita = async(req, res) => {
 
 const createVisita = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null || user.id === 1)
@@ -592,7 +589,7 @@ const createVisita = async(req, res) => {
 
 const updateVisita = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)
@@ -615,7 +612,7 @@ const updateVisita = async(req, res) => {
 
 const deleteVisita = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)
@@ -639,7 +636,7 @@ const deleteVisita = async(req, res) => {
 
 const getMedicamentos = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)
@@ -660,7 +657,7 @@ const getMedicamentos = async(req, res) => {
 
 const updateMedicamento = async(req, res) => {
     //Validando que el token sea correcto ------
-    const token = req.signedCookies.JWT_TOKEN
+    const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
         if (user === null)

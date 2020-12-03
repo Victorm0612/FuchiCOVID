@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
 
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -12,6 +13,7 @@ export default new Vuex.Store({
             id_user: null,
             name: null,
             email: null,
+            token: null,
             refreshToken: null,
             type_user: null
         },
@@ -42,6 +44,7 @@ export default new Vuex.Store({
                 id_user: null,
                 name: null,
                 email: null,
+                token: null,
                 refreshToken: null,
                 type_user: null
             }
@@ -81,10 +84,12 @@ export default new Vuex.Store({
                             id_user: res.data.id,
                             name: null,
                             email: null,
+                            token: res.data.token,
                             refreshToken: res.data.refreshToken,
                             type_user: res.data.type
                         }
                         context.commit('assignDataUser', user)
+                        console.log(res)
                         resolve(res)
                     })
                     .catch(err => {
