@@ -9,7 +9,16 @@ import 'vue-lazy-youtube-video/dist/style.css'
 import LazyYoutubeVideo from 'vue-lazy-youtube-video'
 import VueCookies from 'vue-cookies'
 import VueJwtDecode from 'vue-jwt-decode';
+import VueGeolocation from 'vue-browser-geolocation';
+import * as VueGoogleMaps from 'vue2-google-maps';
+
 Vue.use(VueJwtDecode)
+Vue.use(VueGeolocation)
+Vue.use(VueGoogleMaps, {
+    load: {
+        key: 'AIzaSyB8NHGLW64s2kr7Ql0FSWA42aTFnOF03HU'
+    }
+})
 
 Vue.component('LazyYoutubeVideo', LazyYoutubeVideo)
 

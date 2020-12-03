@@ -39,14 +39,15 @@ export default {
       name: "",
       email: "",
       link_user: [
+        { text: "Panel de control", route: "Dashboard", requireType: [1,2]},
         { text: "Perfil", route: "Profile", requireType:[1,2]},
         { text: "Registro de Profesionales", route: "RegisterPro", requireType: [1] },
-        { text: "Registro Paciente", route: "Covid", requireType: [1] },
+        { text: "Registro de Pacientes", route: "RegisterPacient", requireType: [1] },
         { text: "Profesionales", route: "Profesionales", requireType: [1] },
-        { text: "Pacientes", route: "DashBoard", requireType: [1, 2] },
+        { text: "Pacientes", route: "Pacientes", requireType: [1, 2] },
         { text: "Visitas", route: "DashBoard", requireType: [2] },
         { text: "Medicamentos", route: "DashBoard", requireType: [2] },
-        { text: "Mapa Contagios", route: "DashBoard", requireType: [1, 2] },
+        { text: "Mapa de Contagios", route: "MapaComponent", requireType: [1, 2] },
         { text: "Reportes", route: "DashBoard", requireType: [1, 2] },
       ],
     };

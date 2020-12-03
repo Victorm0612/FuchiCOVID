@@ -14,7 +14,7 @@
 
     <v-card-text class="pt-0">
       <div class="title font-weight-light mb-2">
-        Citas canceladas
+        Numero de visitas por mes
       </div>
       <div class="title font-weight-light mb-2">
         5

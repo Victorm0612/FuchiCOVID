@@ -426,7 +426,7 @@ const updatePacient = async(req, res) => {
             // Finaliza validación del token -----
             const { num_id, tipo_id, nombre_completo, edad, direccion, ciudad, barrio, id_doctor, geolocalizacion, num_personas_convivencia, hipotesis } = req.body
             try {
-                pool.query(`UPDATE paciente SET tipo_id='${tipo_id}', nombre_completo='${nombre_completo}', edad='${edad}', direccion='${direccion}', ciudad='${ciudad}',barrio='${barrio}' id_doctor='${id_doctor}', geolocalizacion='${geolocalizacion}', num_personas_convivencia='${num_personas_convivencia}',hipotesis='${hipotesis}' WHERE num_id='${num_id}'`);
+                pool.query(`UPDATE paciente SET tipo_id='${tipo_id}', nombre_completo='${nombre_completo}', edad='${edad}', direccion='${direccion}', ciudad='${ciudad}',barrio='${barrio}', id_doctor='${id_doctor}', geolocalizacion='${geolocalizacion}', num_personas_convivencia='${num_personas_convivencia}',hipotesis='${hipotesis}' WHERE num_id='${num_id}'`);
                 res.json({ 'RES': 'ACTUALIZADO' })
             } catch (error) {
                 res.status(403).json({ 'RES': 'ERROR AL ACTUALIZAR PACIENTE ' + error })

@@ -63,7 +63,9 @@ export default new Vuex.Store({
                         })
                         .then(res => {
                             localStorage.removeItem('user')
+                            localStorage.removeItem('center')
                             context.commit('destroyToken')
+                            context.commit('setModuleTitle', 'Panel de control')
                             resolve(res)
 
                         })

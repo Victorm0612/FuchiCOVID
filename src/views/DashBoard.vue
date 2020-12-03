@@ -1,12 +1,13 @@
 <template>
-  <div class="mt-3" id="dashboard">
+  <v-container fluid class="mt-3" id="dashboard">
     <div class="pt-5">
     <h1>{{ moduleTitle }}</h1>
     <profile-component v-if="moduleTitle == 'Perfil'"></profile-component>
     <register-pro-component v-if="moduleTitle == 'Registro de Profesionales'"></register-pro-component>
     <profesionales-component v-if="moduleTitle == 'Profesionales'"></profesionales-component>
-    <employees-component v-if="moduleTitle == 'Empleados'"></employees-component>
-    <expenses-component v-if="moduleTitle == 'Gastos'"></expenses-component>
+    <register-pacient-component v-if="moduleTitle == 'Registro de Pacientes'"></register-pacient-component>
+    <pacientes-component v-if="moduleTitle == 'Pacientes'"></pacientes-component>
+    <mapa-component v-if="moduleTitle == 'Mapa de Contagios'"></mapa-component>
     <v-row class="pt-3">
       <v-col cols="12" md="4">
         <registrations-card-component
@@ -47,7 +48,7 @@
       </v-col>
     </v-row>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -55,6 +56,9 @@
 import ProfileComponent from "@/components/ProfileComponent.vue";
 import RegisterProComponent from "@/components/RegisterProComponent.vue";
 import ProfesionalesComponent from "@/components/ProfesionalesComponent.vue";
+import PacientesComponent from "@/components/PacientesComponent.vue";
+import RegisterPacientComponent from "@/components/RegisterPacientComponent.vue";
+import MapaComponent from "@/components/MapaComponent.vue";
 
 import RegistrationsCardComponent from "@/components/dashboard-components/RegistrationsCardComponent.vue";
 import RequestsCardComponent from "@/components/dashboard-components/RequestsCardComponent.vue";
@@ -70,6 +74,9 @@ import InstagramCardComponent from "@/components/dashboard-components/InstagramC
             ProfileComponent,
             RegisterProComponent,
             ProfesionalesComponent,
+            PacientesComponent,
+            RegisterPacientComponent,
+            MapaComponent,
 
             RegistrationsCardComponent,
             RequestsCardComponent,

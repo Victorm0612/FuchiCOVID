@@ -241,7 +241,7 @@ export default {
       rules: {
         required: (value) => !!value || "Este campo no puede estar vacio",
         documentRules: (value) =>
-          value.length <= 10 || "El documento debe contener 10 dígitos",
+          value.length == 10 || "El documento debe contener 10 dígitos",
         emailRules: (value) =>
           /.+@.+/.test(value) || "Ingresa un correo valido",
         passwordRules: (value) =>

@@ -395,7 +395,6 @@ export default {
     };
   },
   created() {
-    console.log(this.num_id);
     this.formBeforeEdit = Object.assign({}, this.form);
   },
   mounted() {

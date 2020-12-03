@@ -285,6 +285,19 @@ export default {
         password: "",
         confirmPassword: "",
       },
+      defaultItem: {
+        num_id: "",
+        tipo_id: "",
+        nombre_profesional: "",
+        direccion: "",
+        barrio: "",
+        registrado_por: "",
+        universidad: "",
+        entidadSalud: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      },
       headers: [
         {
           text: "#",
@@ -385,7 +398,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response.data);
           for (let profesional of response.data) {
             this.profesionals.push(profesional);
           }
@@ -403,7 +415,7 @@ export default {
       this.editedIndex = this.profesionals.indexOf(item);
       this.editedItem = {
         num_id: item.num_id,
-        tipo_id: this.docType[item.tipo_id],
+        tipo_id: this.docType[this.profesionals[this.editedIndex].tipo_id],
         nombre_profesional: item.nombre_profesional,
         direccion: item.direccion,
         barrio: item.barrio,

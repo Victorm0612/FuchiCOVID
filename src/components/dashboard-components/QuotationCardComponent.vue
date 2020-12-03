@@ -17,7 +17,7 @@
 
     <v-card-text class="pt-0">
       <div class="title font-weight-light mb-2">
-        Cotizaciones Realizadas
+        Visitas por día
       </div>
       <div class="subheading font-weight-light grey--text">
         Índice de cotizaciones realizadas

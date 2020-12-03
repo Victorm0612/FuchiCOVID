@@ -17,7 +17,7 @@
 
     <v-card-text class="pt-0">
       <div class="title font-weight-light mb-2">
-        Registros de usuarios
+        Contagios por Barrio
       </div>
       <div class="subheading font-weight-light grey--text">
         <v-icon color="green" small> fas fa-arrow-up </v-icon>

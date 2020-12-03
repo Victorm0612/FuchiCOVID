@@ -13,10 +13,12 @@
         "js-cookie": "^2.2.1",
         "vue": "^2.6.11",
         "vue-axios": "^3.2.0",
+        "vue-browser-geolocation": "^1.8.0",
         "vue-cookies": "^1.7.4",
         "vue-jwt-decode": "^0.1.0",
         "vue-lazy-youtube-video": "^2.3.0",
         "vue-router": "^3.2.0",
+        "vue2-google-maps": "^0.10.7",
         "vuetify": "^2.3.19",
         "vuex": "^3.4.0"
     },

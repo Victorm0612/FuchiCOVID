@@ -12,13 +12,13 @@
         color="white"
         line-width="2"
         padding="16"
-        type='bars'
+        type='trend'
       ></v-sparkline>
     </v-sheet>
 
     <v-card-text class="pt-0">
       <div class="title font-weight-light mb-2">
-        Solicitudes de cotización
+        Contagios por edad
       </div>
       <div class="subheading font-weight-light grey--text">
         Rendimiento de la última campaña
