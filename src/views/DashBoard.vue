@@ -8,6 +8,9 @@
     <register-pacient-component v-if="moduleTitle == 'Registro de Pacientes'"></register-pacient-component>
     <pacientes-component v-if="moduleTitle == 'Pacientes'"></pacientes-component>
     <mapa-component v-if="moduleTitle == 'Mapa de Contagios'"></mapa-component>
+    <register-visit-component v-if="moduleTitle == 'Registar Vista'"></register-visit-component>
+    <visits-component v-if="moduleTitle == 'Visitas'"></visits-component>
+    <medicamentos-component v-if="moduleTitle == 'Medicamentos'"></medicamentos-component>
     <v-row class="pt-3">
       <v-col cols="12" md="4">
         <registrations-card-component
@@ -27,24 +30,9 @@
     </v-row>
     <v-row class="custom4cols">
       <v-col cols="12" md="4" xs="12">
-        <revenue-card-component
-          v-if="moduleTitle == 'Panel de control'"
-        ></revenue-card-component>
-      </v-col>
-      <v-col cols="12" md="4" xs="12">
         <cancel-card-component
           v-if="moduleTitle == 'Panel de control'"
         ></cancel-card-component>
-      </v-col>
-      <v-col cols="12" md="4" xs="12">
-        <twitter-card-component
-          v-if="moduleTitle == 'Panel de control'"
-        ></twitter-card-component>
-      </v-col>
-      <v-col cols="12" md="4" xs="12">
-        <instagram-card-component
-          v-if="moduleTitle == 'Panel de control'"
-        ></instagram-card-component>
       </v-col>
     </v-row>
     </div>
@@ -58,15 +46,16 @@ import RegisterProComponent from "@/components/RegisterProComponent.vue";
 import ProfesionalesComponent from "@/components/ProfesionalesComponent.vue";
 import PacientesComponent from "@/components/PacientesComponent.vue";
 import RegisterPacientComponent from "@/components/RegisterPacientComponent.vue";
+import RegisterVisitComponent from "@/components/RegisterVisitComponent.vue";
+import VisitsComponent from '../components/VisitsComponent.vue';
 import MapaComponent from "@/components/MapaComponent.vue";
 
 import RegistrationsCardComponent from "@/components/dashboard-components/RegistrationsCardComponent.vue";
 import RequestsCardComponent from "@/components/dashboard-components/RequestsCardComponent.vue";
 import QuotationCardComponent from "@/components/dashboard-components/QuotationCardComponent.vue";
-import RevenueCardComponent from "@/components/dashboard-components/RevenueCardComponent.vue";
 import CancelCardComponent from "@/components/dashboard-components/CancelCardComponent.vue";
-import TwitterCardComponent from "@/components/dashboard-components/TwitterCardComponent.vue";
-import InstagramCardComponent from "@/components/dashboard-components/InstagramCardComponent.vue";
+import MedicamentosComponent from '../components/medicamentosComponent.vue';
+
 
     export default {
         name: 'DashBoard',
@@ -76,15 +65,15 @@ import InstagramCardComponent from "@/components/dashboard-components/InstagramC
             ProfesionalesComponent,
             PacientesComponent,
             RegisterPacientComponent,
+            RegisterVisitComponent,
             MapaComponent,
+            VisitsComponent,
 
             RegistrationsCardComponent,
             RequestsCardComponent,
             QuotationCardComponent,
-            RevenueCardComponent,
             CancelCardComponent,
-            TwitterCardComponent,
-            InstagramCardComponent
+                MedicamentosComponent,
  
         },
   computed: {

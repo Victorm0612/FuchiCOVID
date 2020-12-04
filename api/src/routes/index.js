@@ -31,8 +31,15 @@ const {
     createVisita,
     updateVisita,
     deleteVisita,
+    getgastoMedicamentos,
+    getgastoMedicamentoById,
+    creategastoMedicamento,
+    updategastoMedicamento,
+    deletegastoMedicamento,
     getMedicamentos,
-    updateMedicamento
+    getMedicamentosById,
+    getLaboratorios,
+    getExistencia,
 } = require('../controllers/index.controller')
 
 router.post('/refresh', refresh_token);
@@ -73,6 +80,14 @@ router.post('/registrarvisita', createVisita);
 router.put('/actualizarvisita', updateVisita);
 router.delete('/borrarvisita/:id', deleteVisita);
 
+router.get('/gastomedicamentos', getgastoMedicamentos);
+router.get('/gastomedicamento/:id', getgastoMedicamentoById);
+router.post('/registrargastomedicamento', creategastoMedicamento);
+router.put('/actualizargastomedicamento', updategastoMedicamento);
+router.delete('/borrargastomedicamento/:id', deletegastoMedicamento);
+
 router.get('/medicamentos', getMedicamentos);
-router.put('/actualizarmedicamento', updateMedicamento);
+router.get('/medicamentos/:id', getMedicamentosById);
+router.get('/laboratorios', getLaboratorios);
+router.post('/existencia', getExistencia);
 module.exports = router;

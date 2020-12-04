@@ -3,7 +3,7 @@
         <GmapMap
             :center="myCoordinates"
             :zoom="zoom"
-            style="width:640px; height:360px; margin: 32px auto;"
+            style="width:860px; height:480px; margin: 32px auto;"
             ref="mapRef"
             @dragend="handleDrag"
         >

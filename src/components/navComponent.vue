@@ -1,10 +1,13 @@
 <template>
   <div id="nav-bar" class="mx-auto overflow-hidden">       
-    <v-app-bar  flat dark fixed> 
+    <v-app-bar flat dark fixed> 
       <router-link to="/">
         <img class="pt-2" width="200" height="100" :src="require('@/assets/logo.png')" />
       </router-link>
       <v-spacer></v-spacer>
+      <v-avatar v-if="isloggedIn" color="primary" size="40">
+        <span class="white--text headline">{{retrieveName}}</span>
+      </v-avatar>
       <v-btn v-if="!isMobile && !isloggedIn" text :ripple="false" id="menu" to="/">Inicio</v-btn>
       <v-btn v-if="!isMobile && !isloggedIn" text :ripple="false" id="menu" to="/covid">Covid19</v-btn>
       <v-btn icon :ripple="false" v-ripple="{ class: 'transparent--text' }" id="menu" v-if="!isMobile && !isloggedIn" to="/login">
@@ -75,6 +78,14 @@ export default {
     retrieveTypeUser(){
       return this.$store.getters.retrieveUser.type_user;
     },
+    retrieveName(){
+      let arrayName = this.$store.getters.retrieveUser.name.split(" ")
+      let initials=" "
+      for( let names of arrayName){
+        initials +=names.substring(0,1); 
+      }
+      return initials;
+    }
   },
 };
 </script>

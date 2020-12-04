@@ -483,7 +483,7 @@ const getContactById = async(req, res) => {
     const token = req.headers.authorization.substring(6)
     if (token) {
         const user = await validateToken(token, process.env.JWT_SECRET);
-        if (user === null || user.type === 2)
+        if (user === null)
             res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
         else {
             // Finaliza validación del token -----
@@ -655,7 +655,7 @@ const deleteVisita = async(req, res) => {
     }
 };
 
-const getMedicamentos = async(req, res) => {
+const getgastoMedicamentos = async(req, res) => {
     //Validando que el token sea correcto ------
     const token = req.headers.authorization.substring(6)
     if (token) {
@@ -676,7 +676,51 @@ const getMedicamentos = async(req, res) => {
     }
 };
 
-const updateMedicamento = async(req, res) => {
+const getgastoMedicamentoById = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.headers.authorization.substring(6)
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            const id = req.params.id
+                // Finaliza validación del token -----
+            try {
+                const response = await pool.query(`SELECT * FROM gasto_medicamento WHERE id_gasto='${id}'`);
+                res.json(response.rows)
+            } catch (error) {
+                res.status(403).json({ 'RES': 'ERROR, NO SE ENCUENTRA LOS MEDICAMENTOS' })
+            }
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR CON TOKEN' })
+    }
+};
+
+const creategastoMedicamento = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.headers.authorization.substring(6)
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null || user.id === 1)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            // Finaliza validación del token -----
+            const { id_med, id_lab, reserva } = req.body
+            try {
+                pool.query(`INSERT INTO gasto_medicamento(id_med,id_lab,reserva) VALUES('${id_med}','${id_lab}','${reserva}')`)
+                res.json(req.body);
+            } catch (error) {
+                res.json({ 'RES': 'ERROR AL REGISTRAR GASTO ' + error });
+            }
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR CON TOKEN' })
+    }
+};
+
+const updategastoMedicamento = async(req, res) => {
     //Validando que el token sea correcto ------
     const token = req.headers.authorization.substring(6)
     if (token) {
@@ -698,7 +742,115 @@ const updateMedicamento = async(req, res) => {
     }
 };
 
+const deletegastoMedicamento = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.headers.authorization.substring(6)
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            // Finaliza validación del token -----
+            const id = req.params.id;
+            try {
+                await pool.query(
+                    `DELETE FROM gasto_medicamento WHERE id_gasto = '${id}'`
+                );
+                res.json({ 'RES': 'BORRADO' });
+            } catch (error) {
+                res.json({ 'RES': 'NO SE ENCUENTRA EL MEDICAMENTO EN LAS RESERVAS ' + error });
+            }
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR CON TOKEN' })
+    }
+};
 
+const getMedicamentos = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.headers.authorization.substring(6)
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            // Finaliza validación del token -----
+            try {
+                const response = await pool.query('SELECT * FROM medicamentos');
+                res.json(response.rows)
+            } catch (error) {
+                res.status(403).json({ 'RES': 'ERROR, NO SE ENCUENTRA LOS MEDICAMENTOS' })
+            }
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR CON TOKEN' })
+    }
+};
+
+const getMedicamentosById = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.headers.authorization.substring(6)
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            const id = req.params.id
+                // Finaliza validación del token -----
+            try {
+                const response = await pool.query(`SELECT * FROM medicamentos WHERE id_medicamento='${id}'`);
+                res.json(response.rows)
+            } catch (error) {
+                res.status(403).json({ 'RES': 'ERROR, NO SE ENCUENTRA LOS MEDICAMENTOS' })
+            }
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR CON TOKEN' })
+    }
+};
+
+const getLaboratorios = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.headers.authorization.substring(6)
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            // Finaliza validación del token -----
+            try {
+                const response = await pool.query('SELECT * FROM laboratorios');
+                res.json(response.rows)
+            } catch (error) {
+                res.status(403).json({ 'RES': 'ERROR, NO SE ENCUENTRA LOS LABORATORIOS' })
+            }
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR CON TOKEN' })
+    }
+};
+
+const getExistencia = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.headers.authorization.substring(6)
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            // Finaliza validación del token -----
+            const { medicamento, laboratorio } = req.body
+            try {
+                const response = await pool.query(`SELECT * FROM existenciasMed('${medicamento}','${laboratorio}')`);
+                res.json(response.rows)
+            } catch (error) {
+                res.status(403).json({ 'RES': 'ERROR, NO SE ENCUENTRA' })
+            }
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR CON TOKEN' })
+    }
+};
 
 async function validateToken(token, secret) {
     try {
@@ -745,8 +897,15 @@ module.exports = {
     createVisita,
     updateVisita,
     deleteVisita,
+    getgastoMedicamentos,
+    getgastoMedicamentoById,
+    updategastoMedicamento,
+    deletegastoMedicamento,
     getMedicamentos,
-    updateMedicamento
+    getMedicamentosById,
+    getLaboratorios,
+    getExistencia,
+    creategastoMedicamento,
 
 
 }
