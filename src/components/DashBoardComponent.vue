@@ -49,7 +49,7 @@ export default {
         { text: "Visitas", route: "Visit", requireType: [2] },
         { text: "Medicamentos", route: "Medicamentos", requireType: [2] },
         { text: "Mapa de Contagios", route: "MapaComponent", requireType: [1, 2] },
-        { text: "Reportes", route: "DashBoard", requireType: [1, 2] },
+        { text: "Reportes", route: "Reportes", requireType: [1, 2] },
       ],
     };
   },

@@ -852,6 +852,81 @@ const getExistencia = async(req, res) => {
     }
 };
 
+const getReporteEdad = async(req, res) => {
+    const token = req.headers.authorization.substring(6)
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            // Finaliza validación del token -----
+            try {
+                const response = await pool.query(`select * from promcontedad()`);
+                res.json(response.rows)
+            } catch (error) {
+                res.status(403).json({ 'RES': 'ERROR, NO SE ENCUENTRA' })
+            }
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR CON TOKEN' })
+    }
+};
+
+const getReporteBarrio = async(req, res) => {
+    //select * from promcontedad()
+    //Validando que el token sea correcto ------
+    const token = req.headers.authorization.substring(6)
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            // Finaliza validación del token -----
+            try {
+                const response = await pool.query(`select * from PromContBarrio()`);
+                res.json(response.rows)
+            } catch (error) {
+                res.status(403).json({ 'RES': 'ERROR, NO SE ENCUENTRA' })
+            }
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR CON TOKEN' })
+    }
+}
+
+const getReporteDate = async(req, res) => {
+    //Validando que el token sea correcto ------
+    const token = req.headers.authorization.substring(6)
+    if (token) {
+        const user = await validateToken(token, process.env.JWT_SECRET);
+        if (user === null)
+            res.status(403).json({ 'RES': 'ERROR TOKEN INVALIDO' })
+        else {
+            // Finaliza validación del token -----
+            const { fecha, type_req } = req.body
+            if (type_req == 1) {
+                try {
+                    const response = await pool.query(`select * from PromContDia('${fecha}')`);
+                    res.json(response.rows)
+                } catch (error) {
+                    res.status(403).json({ 'RES': 'ERROR, NO SE ENCUENTRA DIA' })
+                }
+            } else {
+                try {
+                    const response = await pool.query(`select PromContMes('${fecha}')`);
+                    res.json(response.rows)
+                } catch (error) {
+                    res.status(403).json({ 'RES': 'ERROR, NO SE ENCUENTRA MES' })
+                }
+            }
+
+        }
+    } else {
+        res.status(403).json({ 'RES': 'ERROR CON TOKEN' })
+    }
+};
+
+
 async function validateToken(token, secret) {
     try {
         const result = jwt.verify(token, secret);
@@ -906,6 +981,8 @@ module.exports = {
     getLaboratorios,
     getExistencia,
     creategastoMedicamento,
-
+    getReporteDate,
+    getReporteBarrio,
+    getReporteEdad
 
 }

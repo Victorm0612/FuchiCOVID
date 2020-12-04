@@ -64,6 +64,7 @@ export default {
         let exp = new Date(VueJwtDecode.decode(this.$store.getters.retrieveUser.token).exp * 1000);
         let actual = new Date()
         let totalTime = exp.getTime() - actual.getTime()
+        console.log(totalTime)
         setTimeout(() => {this.$router.push({ name: 'Logout' });}, totalTime);
       }
     },

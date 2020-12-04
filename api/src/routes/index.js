@@ -40,6 +40,9 @@ const {
     getMedicamentosById,
     getLaboratorios,
     getExistencia,
+    getReporteDate,
+    getReporteBarrio,
+    getReporteEdad
 } = require('../controllers/index.controller')
 
 router.post('/refresh', refresh_token);
@@ -90,4 +93,8 @@ router.get('/medicamentos', getMedicamentos);
 router.get('/medicamentos/:id', getMedicamentosById);
 router.get('/laboratorios', getLaboratorios);
 router.post('/existencia', getExistencia);
+
+router.post('/reportefecha', getReporteDate);
+router.get('/reportebarrio', getReporteBarrio);
+router.get('/reporteedad', getReporteEdad);
 module.exports = router;

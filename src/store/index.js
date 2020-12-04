@@ -84,7 +84,7 @@ export default new Vuex.Store({
                     .then(res => {
                         const user = {
                             id_user: res.data.id,
-                            name: null,
+                            name: " ",
                             email: null,
                             token: res.data.token,
                             refreshToken: res.data.refreshToken,

@@ -11,6 +11,7 @@
     <register-visit-component v-if="moduleTitle == 'Registar Vista'"></register-visit-component>
     <visits-component v-if="moduleTitle == 'Visitas'"></visits-component>
     <medicamentos-component v-if="moduleTitle == 'Medicamentos'"></medicamentos-component>
+    <reportes-component v-if="moduleTitle == 'Reportes'"></reportes-component>
     <v-row class="pt-3">
       <v-col cols="12" md="4">
         <registrations-card-component
@@ -55,6 +56,7 @@ import RequestsCardComponent from "@/components/dashboard-components/RequestsCar
 import QuotationCardComponent from "@/components/dashboard-components/QuotationCardComponent.vue";
 import CancelCardComponent from "@/components/dashboard-components/CancelCardComponent.vue";
 import MedicamentosComponent from '../components/medicamentosComponent.vue';
+import ReportesComponent from '../components/ReportesComponent.vue';
 
 
     export default {
@@ -74,6 +76,7 @@ import MedicamentosComponent from '../components/medicamentosComponent.vue';
             QuotationCardComponent,
             CancelCardComponent,
                 MedicamentosComponent,
+                ReportesComponent,
  
         },
   computed: {
