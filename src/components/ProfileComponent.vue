@@ -502,8 +502,8 @@ export default {
             this.direccion = res.data[0].direccion;
             this.barrio = res.data[0].barrio;
             this.registrado_por = res.data[0].registrado_por;
-            this.universidad = this.listU[res.data[0].id_universidad - 1];
-            this.entidadSalud = this.listE[res.data[0].id_entidadsalud - 1];
+            this.universidad = this.listU[res.data[0].id_universidad - 2];
+            this.entidadSalud = this.listE[res.data[0].id_entidadsalud - 2];
             this.email = res.data[0].email;
             this.password = res.data[0].contrasenia;
             this.confirmPassword = res.data[0].contrasenia;

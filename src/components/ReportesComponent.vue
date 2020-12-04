@@ -105,6 +105,7 @@ export default {
           },
         })
         .then((response) => {
+          this.message ='Los contagios por edad'
           this.result = 'El reporte de edad arrojó lo siguiente: \nTotal pacientes actuales: '+response.data[0].totalpacientes+'\nPacientes menores a 20 años: '+response.data[0].pac20+'\nPacientes entre los 20 y los 30 años: '+response.data[0].pac30+'\nPacientes entre los 30 y los 50 años: '+response.data[0].pac50+'\nPacientes mayores a 50 años: '+response.data[0].pac_sup50
           this.dialogInfo = true;
         });

@@ -306,11 +306,11 @@ export default {
   },
   methods: {
     saveU() {
-      this.listU.unshift(this.formU);
+      this.listU.push(this.formU);
       this.universidad = this.formU;
     },
     saveE() {
-      this.listE.unshift(this.formE);
+      this.listE.push(this.formE);
       this.entidadSalud = this.formE;
     },
     saveUser(evt) {

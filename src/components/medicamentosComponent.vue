@@ -240,7 +240,7 @@ export default {
             {
               headers: {
                 Authorization:
-                  "Token " + this.$store.gettters.retrieveUser.token,
+                  "Token " + this.$store.getters.retrieveUser.token,
               },
             }
           )
