@@ -33,7 +33,7 @@ Vue.component('LazyYoutubeVideo', LazyYoutubeVideo)
 Vue.use(VueAxios, axios)
 Vue.use(VueCookies)
 
-axios.defaults.baseURL = 'http://localhost:3000/';
+axios.defaults.baseURL = 'https://testerfuchi.herokuapp.com/';
 Vue.config.productionTip = false
 
 new Vue({

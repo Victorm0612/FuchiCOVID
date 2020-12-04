@@ -11,7 +11,7 @@ export default new Vuex.Store({
         moduleTitle: "Panel de control",
         user: JSON.parse(localStorage.getItem('user')) || {
             id_user: null,
-            name: null,
+            name: " ",
             email: null,
             token: null,
             refreshToken: null,
@@ -42,7 +42,7 @@ export default new Vuex.Store({
         destroyToken(state) {
             state.user = {
                 id_user: null,
-                name: null,
+                name: " ",
                 email: null,
                 token: null,
                 refreshToken: null,
