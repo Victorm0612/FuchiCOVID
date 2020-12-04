@@ -3,11 +3,21 @@ CREATE TABLE universidad(
 	id_universidad SERIAL PRIMARY KEY,
 	nombre_universidad VARCHAR(30)
 );
+
+INSERT INTO universidad(nombre_universidad) VALUES('UV');
+INSERT INTO universidad(nombre_universidad) VALUES('USC');
+INSERT INTO universidad(nombre_universidad) VALUES('NACIONAL');
+INSERT INTO universidad(nombre_universidad) VALUES('ICESI');
+
 DROP TABLE IF EXISTS entidad_salud CASCADE;
 CREATE TABLE entidad_salud(
 	id_entidad SERIAL PRIMARY KEY,
 	nombre_entidad VARCHAR(30)
 );
+
+INSERT INTO entidad_salud(nombre_entidad) VALUES('SaludCoop');
+INSERT INTO entidad_salud(nombre_entidad) VALUES('Coomeva');
+INSERT INTO entidad_salud(nombre_entidad) VALUES('SaludE');
 
 DROP TABLE IF EXISTS funcionario CASCADE;
 CREATE TABLE funcionario(
@@ -37,6 +47,18 @@ CREATE TABLE profesional(
 	FOREIGN KEY(id_entidadSalud) REFERENCES entidad_salud(id_entidad)
 );
 
+INSERT INTO profesional(num_id,tipo_id,nombre_profesional,direccion,barrio,registrado_por,id_universidad,id_entidadSalud,
+						email,contrasenia) 
+VALUES(1107530686,0,'P1','D1','B1',1,1,1,'p1@gmail.com','Hola!123');
+
+INSERT INTO profesional(num_id,tipo_id,nombre_profesional,direccion,barrio,registrado_por,id_universidad,id_entidadSalud,
+						email,contrasenia) 
+VALUES(1108530686,0,'P2','D2','B2',1,2,2,'p2@gmail.com','Hola!123');
+
+INSERT INTO profesional(num_id,tipo_id,nombre_profesional,direccion,barrio,registrado_por,id_universidad,id_entidadSalud,
+						email,contrasenia) 
+VALUES(1109530686,0,'P3','D3','B3',1,3,3,'p3@gmail.com','Hola!123');
+
 DROP TABLE IF EXISTS paciente CASCADE;
 CREATE TABLE paciente(
 	num_id integer primary key NOT NULL,
@@ -54,6 +76,22 @@ CREATE TABLE paciente(
 	num_personas_convivencia integer,
 	hipotesis varchar(255)
 );
+
+INSERT INTO paciente(num_id, tipo_id, nombre_completo, edad, direccion, ciudad, barrio, id_doctor, 
+					 geolocalizacion, num_personas_convivencia, hipotesis) 
+					 VALUES(1110530686,0,'Victor Paciente','20','D1','Cali','Santa Elena',1107530686,'3.4339038 -76.5372512',2,'Se enferma en la casa');
+					 
+INSERT INTO paciente(num_id, tipo_id, nombre_completo, edad, direccion, ciudad, barrio, id_doctor, 
+					 geolocalizacion, num_personas_convivencia, hipotesis) 
+					 VALUES(1111530686,0,'Jose Paciente','50','D1','Cali','Santa Elena',1108530686,'3.4339038 -76.5372512',2,'Se enferma en el cine');
+					 
+INSERT INTO paciente(num_id, tipo_id, nombre_completo, edad, direccion, ciudad, barrio, id_doctor, 
+					 geolocalizacion, num_personas_convivencia, hipotesis) 
+					 VALUES(1112530686,0,'Mafe Paciente','32','D1','Cali','Santa Elena',1109530686,'3.4339038 -76.5372512',2,'Se enferma en el trabajo');	
+					 
+INSERT INTO paciente(num_id, tipo_id, nombre_completo, edad, direccion, ciudad, barrio, id_doctor, 
+					 geolocalizacion, num_personas_convivencia, hipotesis) 
+					 VALUES(1113530686,0,'David Paciente','10','D1','Cali','El Ingenio',1109530686,'3.4339038 -76.5372512',2,'Se enferma en el parque');				
 
 DROP TABLE IF EXISTS laboratorio CASCADE;
 CREATE TABLE laboratorio(
@@ -112,6 +150,13 @@ CREATE TABLE visita(
 	observacion VARCHAR(60)
 );
 
+INSERT INTO visita(id_doctor, id_paciente, id_medicamento, temperatura, peso, presion,dosis,observacion) 
+VALUES(1107530686, 1111530686,1,'35ª','50kg','120/80','3mg','Está mejorando.');
+INSERT INTO visita(id_doctor, id_paciente, id_medicamento, temperatura, peso, presion,dosis,observacion) 
+VALUES(1107530686, 1111530686,2,'30ª','50kg','120/80','5mg','Está empeorando.');
+INSERT INTO visita(id_doctor, id_paciente, id_medicamento, temperatura, peso, presion,dosis,observacion) 
+VALUES(1107530686, 1111530686,2,'40ª','50kg','120/80','6mg','Está mejorando.');
+
 DROP TABLE IF EXISTS contacto CASCADE;
 CREATE TABLE contacto(
 	id_contacto SERIAL PRIMARY KEY,
@@ -122,6 +167,7 @@ CREATE TABLE contacto(
 		ON UPDATE CASCADE
 		ON DELETE CASCADE
 );
+
 
 DROP TABLE IF EXISTS telefonos CASCADE;
 CREATE TABLE telefonos(
@@ -389,5 +435,7 @@ select * from gasto_medicamento
 select * from medicamentos
 select * from paciente
 select * from laboratorio
+
+INSERT INTO PACIENTE
 
 
